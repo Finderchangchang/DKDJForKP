@@ -3,6 +3,7 @@ package liuliu.kp.method;
 import java.util.Map;
 
 import liuliu.kp.model.HBModel;
+import liuliu.kp.model.HBsModel;
 import liuliu.kp.model.MessageModel;
 import liuliu.kp.model.VersionModel;
 import retrofit2.http.GET;
@@ -82,5 +83,5 @@ public interface GitHubAPI {
 
     //红包查询接口（用于消费选红包）
     @GET("App/Android/gethongbaoList.aspx")
-    Observable<VersionModel> getHBList(@Query("uid") String orderid);
+    Observable<HBsModel> getHBList(@Query("uid") String orderid);
 }

@@ -51,13 +51,17 @@ public class HBListener implements IHBMView {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
-//                    if (("1").equals(model.getSuccess())) {
-//                        mView.getHB(model.getUserdata());
-//                    } else {
-//                        mView.getHB(null);
-//                    }
+                    if (("1").equals(model.getState())) {
+                        if (model.getData().size() > 0) {
+                            mView.getHBList(model.getData().get(0));
+                        } else {
+                            mView.getHBList(null);
+                        }
+                    } else {
+                        mView.getHBList(null);
+                    }
                 }, error -> {
-                    mView.getHB(null);
+                    mView.getHBList(null);
                 });
     }
 }

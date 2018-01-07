@@ -52,6 +52,7 @@ import liuliu.kp.method.UpdateManager;
 import liuliu.kp.method.Utils;
 import liuliu.kp.model.CityModel;
 import liuliu.kp.model.HBModel;
+import liuliu.kp.model.HBsModel;
 import liuliu.kp.model.LatLngModel;
 import liuliu.kp.model.PoiModel;
 import liuliu.kp.model.UserModel;
@@ -456,7 +457,7 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
     }
 
     @Override
-    public void getHBList(UserModel model) {
+    public void getHBList(HBsModel.DataBean model) {
 
     }
 }

@@ -33,14 +33,19 @@ import java.util.List;
 import liuliu.kp.R;
 import liuliu.kp.base.BaseApplication;
 import liuliu.kp.config.Key;
+import liuliu.kp.listener.HBListener;
 import liuliu.kp.listener.OrderListener;
 import liuliu.kp.method.CommonAdapter;
 import liuliu.kp.method.CommonViewHolder;
 import liuliu.kp.method.RefreshLayout;
 import liuliu.kp.method.Utils;
 import liuliu.kp.method.WxUtil;
+import liuliu.kp.model.HBModel;
+import liuliu.kp.model.HBsModel;
 import liuliu.kp.model.OrderListModel;
 import liuliu.kp.model.OrderModel;
+import liuliu.kp.model.UserModel;
+import liuliu.kp.view.IHB;
 import liuliu.kp.view.IOrder;
 import liuliu.kp.wxapi.PayResult;
 import liuliu.kp.wxapi.SignUtils;
@@ -49,7 +54,7 @@ import liuliu.kp.wxapi.SignUtils;
  * Created by Administrator on 2016/12/2.
  */
 
-public class OrderFragment extends Fragment implements IOrder {
+public class OrderFragment extends Fragment implements IOrder, IHB {
     CommonAdapter mAdapter;
     ListView lv;
     List<OrderModel> order;
@@ -151,9 +156,29 @@ public class OrderFragment extends Fragment implements IOrder {
         return view;
     }
 
+    @Override
+    public void getHB(HBModel.DataBean model) {
+
+    }
+
+    HBsModel.DataBean lq_model;
+
+    @Override
+    public void getHBList(HBsModel.DataBean model) {
+        if (model != null && model.get是否可用() == "可用" && model.get是否使用() == "否") {
+            lq_model = model;
+            load_pop(model.get领取金额());
+        } else {
+            lq_model = null;
+            load_pop("0");
+        }
+    }
+
+    String Order_Id = "";
+    int Order_Price;
+
     class MyThread extends Thread {
-        String Order_Id = "";
-        int Order_Price;
+
 
         public MyThread(String orderId, String price) {
             Order_Id = orderId;
@@ -179,6 +204,11 @@ public class OrderFragment extends Fragment implements IOrder {
     private View inflate;
 
     private void showDialog(String orderId, String price) {
+        HBListener listener = new HBListener(this);
+        listener.getHBList();//检测当前是否有红包
+    }
+
+    private void load_pop(String num) {
         //将布局设置给Dialog
         bottom_dialog.setContentView(inflate);
         Button pay_btn = (Button) inflate.findViewById(R.id.pay_btn);
@@ -187,6 +217,14 @@ public class OrderFragment extends Fragment implements IOrder {
         RelativeLayout zfb_pay_rl = (RelativeLayout) inflate.findViewById(R.id.zfb_pay_rl);
         CheckBox wx_cb = (CheckBox) inflate.findViewById(R.id.wx_cb);
         CheckBox zfb_cb = (CheckBox) inflate.findViewById(R.id.zfb_cb);
+        TextView hb_pay_tv = (TextView) inflate.findViewById(R.id.hb_pay_tv);
+        RelativeLayout hb_pay_rl = (RelativeLayout) inflate.findViewById(R.id.hb_pay_rl);
+        if (num != "0") {
+            hb_pay_tv.setText("红包金额：" + num + "元");
+            hb_pay_rl.setVisibility(View.VISIBLE);
+        } else {
+            hb_pay_rl.setVisibility(View.GONE);
+        }
         wx_cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
             zfb_cb.setChecked(!isChecked);
             pay_is_wx = isChecked;
@@ -203,11 +241,12 @@ public class OrderFragment extends Fragment implements IOrder {
             wx_cb.setChecked(false);
             zfb_cb.setChecked(true);
         });
-        pay_tv.setText(price + "元");
+        pay_tv.setText(Order_Price + "元");
         pay_btn.setOnClickListener(v -> {
-            if (orderId != null) {
+
+            if (Order_Id != null) {
                 if (!pay_is_wx) {
-                    String orderInfo = getOrderInfo("易快跑", "易快跑支付", price, orderId);
+                    String orderInfo = getOrderInfo("易快跑", "易快跑支付", Order_Price + "", Order_Id);
                     String sign = sign(orderInfo);
                     try {
                         sign = URLEncoder.encode(sign, "UTF-8");
@@ -232,7 +271,7 @@ public class OrderFragment extends Fragment implements IOrder {
                     payThread.start();
                 } else {
                     bottom_dialog.dismiss();
-                    new MyThread(orderId, price).start();
+                    new MyThread(Order_Id, Order_Price + "").start();
                 }
             }
         });
