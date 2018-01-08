@@ -28,6 +28,24 @@ public class SaveOrderModel {
     private String daishoufee;//	帮我送---代收货款金额,
     private String fahuotime;//	帮我送---发货时间,
     private String source;//	注册来源 [0 web; 2安卓; 3 ios]}
+    private String ishongbao;//1红包消费，否则传补传都行。
+    private String hbid;// 红包编号
+
+    public String getIshongbao() {
+        return ishongbao;
+    }
+
+    public void setIshongbao(String ishongbao) {
+        this.ishongbao = ishongbao;
+    }
+
+    public String getHbid() {
+        return hbid;
+    }
+
+    public void setHbid(String hbid) {
+        this.hbid = hbid;
+    }
 
     public String getOrdertype() {
         return ordertype;

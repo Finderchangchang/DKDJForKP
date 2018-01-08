@@ -34,6 +34,7 @@ import java.util.List;
 import liuliu.kp.R;
 import liuliu.kp.config.Key;
 import liuliu.kp.listener.OrderListener;
+import liuliu.kp.method.Utils;
 import liuliu.kp.method.WxUtil;
 import liuliu.kp.model.OrderDetailModel;
 import liuliu.kp.view.IOrderDetail;
@@ -438,10 +439,10 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
     private String getOrderInfo(String subject, String body, String price, String orderid) {
 
         // 签约合作者身份ID
-        String orderInfo = "partner=" + "\"" + Key.PARTNER + "\"";
+        String orderInfo = "partner=" + "\"" + Utils.getCache("PARTNER") + "\"";
 
         // 签约卖家支付宝账号
-        orderInfo += "&seller_id=" + "\"" + Key.SELLER + "\"";
+        orderInfo += "&seller_id=" + "\"" + Utils.getCache("SELLER") + "\"";
 
         // 商户网站唯一订单号
         orderInfo += "&out_trade_no=" + "\"" + orderid + "\"";
@@ -456,7 +457,7 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         orderInfo += "&total_fee=" + "\"" + price + "\"";
 
         // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"" + "http://kuaipao.myejq.com/Alipay/userKuaipaoNotify.aspx" + "\"";
+        orderInfo += "&notify_url=" + "\"" + Utils.getCache("HD") + "/Alipay/userKuaipaoNotify.aspx" + "\"";
 
         // 服务接口名称， 固定值
         orderInfo += "&service=\"mobile.securitypay.pay\"";
@@ -486,15 +487,10 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         return orderInfo;
     }
 
-    /**
-     * sign the order info. 对订单信息进行签名
-     *
-     * @param content 待签名订单信息
-     */
-    private String sign(String content) {
-        return SignUtils.sign(content, Key.RSA_PRIVATE);
-    }
 
+    private String sign(String content) {
+        return SignUtils.sign(content, Utils.getCache("RSA_PRIVATE"));
+    }
     /**
      * get the sign type we use. 获取签名方式
      */

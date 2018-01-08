@@ -68,7 +68,7 @@ public class WxUtil {
         morderID = orderID;
         mprice = price;
         sbb = new StringBuffer();
-        msgApi = WXAPIFactory.createWXAPI(mcontext, Key.APP_ID);
+        msgApi = WXAPIFactory.createWXAPI(mcontext, Utils.getCache("APP_ID"));
         request = new PayReq();
    /*     if (msgApi != null) {
             msgApi.registerApp(Key.APP_ID);//注册App到微信
@@ -130,12 +130,12 @@ public class WxUtil {
         try {
 
             List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
-            packageParams.add(new BasicNameValuePair("appid", Key.APP_ID));
+            packageParams.add(new BasicNameValuePair("appid", Utils.getCache("APP_ID")));
 
             packageParams.add(new BasicNameValuePair("body", "易快跑-充值"));
-            packageParams.add(new BasicNameValuePair("mch_id", Key.MCH_ID));
+            packageParams.add(new BasicNameValuePair("mch_id", Utils.getCache("MCH_ID")));
             packageParams.add(new BasicNameValuePair("nonce_str", nonceStr));
-            packageParams.add(new BasicNameValuePair("notify_url", "http://kuaipao.myejq.com/wx/userNotify.aspx"));//写你们的回调地址
+            packageParams.add(new BasicNameValuePair("notify_url", Utils.getCache("domain") + "/wx/userNotify.aspx"));//写你们的回调地址
             packageParams.add(new BasicNameValuePair("out_trade_no", morderID));//订单码
             packageParams.add(new BasicNameValuePair("spbill_create_ip", "127.0.0.1"));//终端ip
             packageParams.add(new BasicNameValuePair("total_fee", mprice + ""));
@@ -213,7 +213,7 @@ public class WxUtil {
             sb.append('&');
         }
         sb.append("key=");
-        sb.append(Key.API_KEY);
+        sb.append(Utils.getCache("API_KEY"));
 
         Log.e("Simon", ">>>>sb:" + sb);
         String packageSign = MD5.getMessageDigest(sb.toString().getBytes()).toUpperCase();
@@ -246,8 +246,8 @@ public class WxUtil {
 	 */
     private void genPayReq() {
 
-        request.appId = Key.APP_ID;
-        request.partnerId = Key.MCH_ID;
+        request.appId = Utils.getCache("APP_ID");
+        request.partnerId = Utils.getCache("MCH_ID");
         if (resultunifiedorder != null) {
             request.prepayId = resultunifiedorder.get("prepay_id");
             Log.e(">>>>>partnerId:", request.partnerId);
@@ -279,7 +279,7 @@ public class WxUtil {
  */
     private void sendPayReq() {
 
-        msgApi.registerApp(Key.APP_ID);
+        msgApi.registerApp(Utils.getCache("APP_ID"));
         Log.e("request:", request + "");
         msgApi.sendReq(request);
 
@@ -301,7 +301,7 @@ public class WxUtil {
             sbbb.append('&');
         }
         sbbb.append("key=");
-        sbbb.append(Key.API_KEY);
+        sbbb.append(Utils.getCache("API_KEY"));
 
         this.sbb.append("sign str\n" + sbbb.toString() + "\n\n");
         String appSign = MD5.getMessageDigest(sbbb.toString().getBytes());

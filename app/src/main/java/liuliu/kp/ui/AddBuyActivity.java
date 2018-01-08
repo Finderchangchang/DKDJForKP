@@ -44,17 +44,21 @@ import liuliu.kp.R;
 import liuliu.kp.base.BaseActivity;
 import liuliu.kp.config.Key;
 import liuliu.kp.listener.AddressManageListener;
+import liuliu.kp.listener.HBListener;
 import liuliu.kp.listener.SuanLuListener;
 import liuliu.kp.method.CommonAdapter;
 import liuliu.kp.method.CommonViewHolder;
 import liuliu.kp.method.Utils;
 import liuliu.kp.method.WxUtil;
 import liuliu.kp.model.FeiModel;
+import liuliu.kp.model.HBModel;
+import liuliu.kp.model.HBsModel;
 import liuliu.kp.model.PoiModel;
 import liuliu.kp.model.SaveOrderModel;
 import liuliu.kp.model.TagModel;
 import liuliu.kp.view.IAddBuy;
 import liuliu.kp.view.IAddressManage;
+import liuliu.kp.view.IHB;
 import liuliu.kp.wxapi.PayResult;
 import liuliu.kp.wxapi.SignUtils;
 
@@ -67,7 +71,7 @@ import static liuliu.kp.method.Utils.getCache;
  * Created by Administrator on 2016/11/30.
  */
 
-public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressManage {
+public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressManage, IHB {
     public static AddBuyActivity mInstail;
     @Bind(R.id.title_bar)
     TitleBar titleBar;
@@ -121,7 +125,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     @Bind(R.id.select_tel_tv)
     TextView select_tel_tv;
     AddressManageListener addressManageListener;
-    WxUtil wxUtil=new WxUtil();
+    WxUtil wxUtil = new WxUtil();
+
     @Override
     public void initViews() {
         setContentView(R.layout.activity_add_buy);
@@ -282,7 +287,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                         if (buy_poi != null) {
                             db.save(buy_poi);
                         }
-                        showDialog();//显示底部弹出框
+                        HBListener listener = new HBListener(this);
+                        listener.getHBList();//检测当前是否有红包
                     } else {
                         ToastShort("距离太远，请重新下单");
                     }
@@ -318,6 +324,22 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
 
     boolean pay_is_wx = true;
 
+    @Override
+    public void getHB(HBModel.DataBean model) {
+
+    }
+
+    @Override
+    public void getHBList(HBsModel.DataBean model) {
+        if (model != null && model.get是否可用() == "可用" && model.get是否使用() == "否") {
+            lq_model = model;
+            showDialog(model.get领取金额());
+        } else {
+            lq_model = null;
+            showDialog("0");
+        }
+    }
+
     class MyThread extends Thread {
         String Order_Id = "";
         int Order_Price;
@@ -332,7 +354,9 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         }
     }
 
-    private void showDialog() {
+    HBsModel.DataBean lq_model;
+
+    private void showDialog(String num) {
         //将布局设置给Dialog
         bottom_dialog.setContentView(inflate);
         Button pay_btn = (Button) inflate.findViewById(R.id.pay_btn);
@@ -353,12 +377,23 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
             wx_cb.setChecked(true);
             zfb_cb.setChecked(false);
         });
+        TextView hb_pay_tv = (TextView) inflate.findViewById(R.id.hb_pay_tv);
+        RelativeLayout hb_pay_rl = (RelativeLayout) inflate.findViewById(R.id.hb_pay_rl);
+        if (num != "0") {
+            hb_pay_tv.setText("红包金额：" + num + "元");
+            hb_pay_rl.setVisibility(View.VISIBLE);
+        } else {
+            hb_pay_rl.setVisibility(View.GONE);
+        }
         zfb_pay_rl.setOnClickListener(v -> {
             wx_cb.setChecked(false);
             zfb_cb.setChecked(true);
         });
         pay_tv.setText(feiyong.getTotalfee() + "元");
         pay_btn.setOnClickListener(v -> {
+            if (lq_model != null) {
+                save.setHbid(lq_model.get编号());
+            }
             mListener.saveOrder(save);//生成预订单，调起支付
         });
         ImageView dialog_close_iv = (ImageView) inflate.findViewById(R.id.dialog_close_iv);
@@ -665,10 +700,10 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     private String getOrderInfo(String subject, String body, String price, String orderid) {
 
         // 签约合作者身份ID
-        String orderInfo = "partner=" + "\"" + Key.PARTNER + "\"";
+        String orderInfo = "partner=" + "\"" + Utils.getCache("PARTNER") + "\"";
 
         // 签约卖家支付宝账号
-        orderInfo += "&seller_id=" + "\"" + Key.SELLER + "\"";
+        orderInfo += "&seller_id=" + "\"" + Utils.getCache("SELLER") + "\"";
 
         // 商户网站唯一订单号
         orderInfo += "&out_trade_no=" + "\"" + orderid + "\"";
@@ -682,8 +717,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         // 商品金额
         orderInfo += "&total_fee=" + "\"" + price + "\"";
 
-        // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"" + "http://kuaipao.myejq.com/Alipay/userKuaipaoNotify.aspx" + "\"";
+        // 服务器异步通知页面路径 http://kuaipao.myejq.com/Alipay/userKuaipaoNotify.aspx
+        orderInfo += "&notify_url=" + "\"" + Utils.getCache("HD") + "/Alipay/userKuaipaoNotify.aspx" + "\"";
 
         // 服务接口名称， 固定值
         orderInfo += "&service=\"mobile.securitypay.pay\"";
@@ -719,7 +754,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
      * @param content 待签名订单信息
      */
     private String sign(String content) {
-        return SignUtils.sign(content, Key.RSA_PRIVATE);
+        return SignUtils.sign(content, Utils.getCache("RSA_PRIVATE"));
     }
 
     /**

@@ -14,6 +14,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import liuliu.kp.R;
 import liuliu.kp.config.Key;
+import liuliu.kp.method.Utils;
 import liuliu.kp.ui.AddBuyActivity;
 import liuliu.kp.ui.AddSongActivity;
 
@@ -26,7 +27,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pay_result);
 
-        api = WXAPIFactory.createWXAPI(this, Key.APP_ID);
+        api = WXAPIFactory.createWXAPI(this, Utils.getCache("APP_ID"));
         api.handleIntent(getIntent(), this);
     }
 

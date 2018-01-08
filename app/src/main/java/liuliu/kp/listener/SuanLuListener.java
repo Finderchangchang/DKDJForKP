@@ -1,5 +1,7 @@
 package liuliu.kp.listener;
 
+import android.text.TextUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,6 +94,10 @@ public class SuanLuListener implements ISuanLuMView {
             map.put("fahuotime", model.getFahuotime());
         }
         map.put("source", model.getSource());
+        if (!TextUtils.isEmpty(model.getHbid())) {
+            map.put("ishongbao", "1");
+            map.put("hbid", model.getHbid());
+        }
         HttpUtil.load()
                 .saveOrder(map)
                 .subscribeOn(Schedulers.io())
@@ -103,7 +109,7 @@ public class SuanLuListener implements ISuanLuMView {
                         mBuy.saveResult(null, "0");
                     }
                 }, error -> {
-                    String s="";
+                    String s = "";
                     mBuy.saveResult(null, "0");
                 });
     }

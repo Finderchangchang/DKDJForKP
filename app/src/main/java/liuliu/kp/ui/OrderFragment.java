@@ -204,8 +204,9 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
     private View inflate;
 
     private void showDialog(String orderId, String price) {
-        HBListener listener = new HBListener(this);
-        listener.getHBList();//检测当前是否有红包
+//        HBListener listener = new HBListener(this);
+//        listener.getHBList();//检测当前是否有红包
+        load_pop("0");
     }
 
     private void load_pop(String num) {
@@ -342,10 +343,10 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
     private String getOrderInfo(String subject, String body, String price, String orderid) {
 
         // 签约合作者身份ID
-        String orderInfo = "partner=" + "\"" + Key.PARTNER + "\"";
+        String orderInfo = "partner=" + "\"" + Utils.getCache("PARTNER") + "\"";
 
         // 签约卖家支付宝账号
-        orderInfo += "&seller_id=" + "\"" + Key.SELLER + "\"";
+        orderInfo += "&seller_id=" + "\"" + Utils.getCache("SELLER") + "\"";
 
         // 商户网站唯一订单号
         orderInfo += "&out_trade_no=" + "\"" + orderid + "\"";
@@ -360,7 +361,7 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
         orderInfo += "&total_fee=" + "\"" + price + "\"";
 
         // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"" + "http://kuaipao.myejq.com/Alipay/userKuaipaoNotify.aspx" + "\"";
+        orderInfo += "&notify_url=" + "\"" + Utils.getCache("HD") + "/Alipay/userKuaipaoNotify.aspx" + "\"";
 
         // 服务接口名称， 固定值
         orderInfo += "&service=\"mobile.securitypay.pay\"";
@@ -390,13 +391,8 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
         return orderInfo;
     }
 
-    /**
-     * sign the order info. 对订单信息进行签名
-     *
-     * @param content 待签名订单信息
-     */
     private String sign(String content) {
-        return SignUtils.sign(content, Key.RSA_PRIVATE);
+        return SignUtils.sign(content, Utils.getCache("RSA_PRIVATE"));
     }
 
     /**

@@ -2,10 +2,12 @@ package liuliu.kp.method;
 
 import java.util.Map;
 
+import liuliu.kp.model.ALiModel;
 import liuliu.kp.model.HBModel;
 import liuliu.kp.model.HBsModel;
 import liuliu.kp.model.MessageModel;
 import liuliu.kp.model.VersionModel;
+import liuliu.kp.model.WXModel;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -76,6 +78,12 @@ public interface GitHubAPI {
 
     @GET("download/version.aspx?c=4")
     Observable<VersionModel> checkUpdate();
+
+    @GET("App/Android/getWxAlipay.aspx?type=1&name=user")
+    Observable<ALiModel> getAli();
+
+    @GET("App/Android/getWxAlipay.aspx?type=2&name=user")
+    Observable<WXModel> getWX();
 
     //检测当前账号，是否能领取红包
     @GET("App/Android/gethongbao.aspx")
