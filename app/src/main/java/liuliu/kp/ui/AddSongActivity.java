@@ -468,8 +468,9 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
 
     @Override
     public void getHBList(HBsModel.DataBean model) {
-        if (model != null && model.get是否可用() == "可用" && model.get是否使用() == "否") {
-            lq_model = model;
+        lq_model = model;
+        if (model != null) {
+            // && model.get是否可用() == "可用" && model.get是否使用() == "否"
             showDialog(model.get领取金额());
         } else {
             lq_model = null;
@@ -678,8 +679,9 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
         pay_btn.setOnClickListener(v -> {
             if (lq_model != null) {
                 save.setHbid(lq_model.get编号());
+            } else {
+                mListener.saveOrder(save);//生成预订单，调起支付
             }
-            mListener.saveOrder(save);//生成预订单，调起支付
         });
         TextView hb_pay_tv = (TextView) inflate.findViewById(R.id.hb_pay_tv);
         RelativeLayout hb_pay_rl = (RelativeLayout) inflate.findViewById(R.id.hb_pay_rl);

@@ -125,7 +125,7 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
                 holder.setOnClickListener(R.id.pay_tv, v -> {
                     if (("未支付").equals(model.getDingdanzhuangtai())) {//支付
                         Order_Id = model.getOrderid();
-                        Order_Price = (int) (Double.parseDouble(model.getTotalPrice()));
+                        Order_Price = Double.parseDouble(model.getTotalPrice());
                         showDialog(model.getOrderid(), model.getTotalPrice());
                     } else {
                         Intent intent = new Intent(OrderListActivity.mIntails, CancelOrderActivity.class);
@@ -177,18 +177,18 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
     }
 
     String Order_Id = "";
-    int Order_Price;
+    Double Order_Price;
 
     class MyThread extends Thread {
 
 
         public MyThread(String orderId, String price) {
             Order_Id = orderId;
-            Order_Price = (int) (Double.parseDouble(price) * 100);
+            Order_Price = Double.parseDouble(price);
         }
 
         public void run() {
-            wxUtil.load(OrderListActivity.mIntails, "易快跑", "易快跑支付", Order_Id, Order_Price);
+            wxUtil.load(OrderListActivity.mIntails, "易快跑", "易快跑支付", Order_Id, (int) (Order_Price * 100));
         }
     }
 

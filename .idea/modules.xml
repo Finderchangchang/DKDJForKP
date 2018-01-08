@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DKDJForKP.iml" filepath="$PROJECT_DIR$/DKDJForKP.iml" />
+      <module fileurl="file://E:\Project\DKDJForKP\DKDJForKP.iml" filepath="E:\Project\DKDJForKP\DKDJForKP.iml" />
       <module fileurl="file://$PROJECT_DIR$/afinal/afinal.iml" filepath="$PROJECT_DIR$/afinal/afinal.iml" />
+      <module fileurl="file://E:\Project\DKDJForKP\afinal\afinal.iml" filepath="E:\Project\DKDJForKP\afinal\afinal.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\Project\DKDJForKP\app\app.iml" filepath="E:\Project\DKDJForKP\app\app.iml" />
     </modules>
   </component>
 </project>
