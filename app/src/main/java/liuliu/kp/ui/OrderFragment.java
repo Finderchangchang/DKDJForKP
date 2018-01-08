@@ -124,6 +124,8 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
                 holder.setText(R.id.io_title_right, model.getOrderTime());
                 holder.setOnClickListener(R.id.pay_tv, v -> {
                     if (("未支付").equals(model.getDingdanzhuangtai())) {//支付
+                        Order_Id = model.getOrderid();
+                        Order_Price = (int) (Double.parseDouble(model.getTotalPrice()));
                         showDialog(model.getOrderid(), model.getTotalPrice());
                     } else {
                         Intent intent = new Intent(OrderListActivity.mIntails, CancelOrderActivity.class);
@@ -341,7 +343,7 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
      * create the order info. 创建订单信息
      */
     private String getOrderInfo(String subject, String body, String price, String orderid) {
-
+        String a = Utils.getCache("PARTNER") + "---" + Utils.getCache("SELLER");
         // 签约合作者身份ID
         String orderInfo = "partner=" + "\"" + Utils.getCache("PARTNER") + "\"";
 
@@ -349,7 +351,7 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
         orderInfo += "&seller_id=" + "\"" + Utils.getCache("SELLER") + "\"";
 
         // 商户网站唯一订单号
-        orderInfo += "&out_trade_no=" + "\"" + orderid + "\"";
+        orderInfo += "&out_trade_no=" + "\"" + Order_Id + "\"";
 
         // 商品名称
         orderInfo += "&subject=" + "\"" + subject + "\"";
@@ -358,7 +360,7 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
         orderInfo += "&body=" + "\"" + body + "\"";
 
         // 商品金额
-        orderInfo += "&total_fee=" + "\"" + price + "\"";
+        orderInfo += "&total_fee=" + "\"" + Order_Price + "\"";
 
         // 服务器异步通知页面路径
         orderInfo += "&notify_url=" + "\"" + Utils.getCache("HD") + "/Alipay/userKuaipaoNotify.aspx" + "\"";
@@ -392,6 +394,7 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
     }
 
     private String sign(String content) {
+        String s = Utils.getCache("RSA_PRIVATE");
         return SignUtils.sign(content, Utils.getCache("RSA_PRIVATE"));
     }
 
