@@ -67,6 +67,7 @@ public class MainListener implements IMainMView {
                         Utils.putCache("APP_ID", key.getAppId());
                         Utils.putCache("MCH_ID", key.getPartnerid());
                         Utils.putCache("domain", key.getDomain());
+                        Utils.putCache("API_KEY", key.getApikey());
                     }
                 }, error -> {
                     String s = "";

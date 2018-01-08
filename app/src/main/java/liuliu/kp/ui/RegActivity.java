@@ -118,13 +118,11 @@ public class RegActivity extends BaseActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(model -> {
                             if (("1").equals(model.getSuccess())) {
+                                Utils.putCache("tel", username);
                                 if (model.getData() != null) {
                                     String userid = model.getData().getUserId();//用户id
                                     String tel = model.getData().getUserTel();//用户电话
-                                    Map<String, String> maps = new HashMap<String, String>();
-                                    maps.put("UserId", userid);
-                                    maps.put("tel", tel);
-                                    Utils.putCache(maps);
+                                    Utils.putCache("UserId", userid);
                                     Utils.IntentPost(MainActivity.class, new Utils.putListener() {
                                         @Override
                                         public void put(Intent intent) {

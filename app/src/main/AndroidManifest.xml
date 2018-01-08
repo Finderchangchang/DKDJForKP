@@ -50,7 +50,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:scheme="wxb8a46d9abcb16a56" />
+                <data android:scheme="wx91664201904be69e" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.OrderDetailsActivity" />
@@ -103,7 +103,7 @@
         <!--fecd131215e4840e9b59a8c65354d353 家里-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="ff7419a50cf66dcb27a4f2d22536dff3" />
+            android:value="6863fffa97d83c1b904a0784425f6925" />
 
         <service android:name="com.amap.api.location.APSService" />
 

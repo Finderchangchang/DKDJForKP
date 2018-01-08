@@ -34,6 +34,7 @@ import net.tsz.afinal.FinalDb;
 import net.tsz.afinal.view.TitleBar;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -329,9 +330,12 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
 
     }
 
+    /**
+     * 弹出dialog
+     */
     @Override
     public void getHBList(HBsModel.DataBean model) {
-        if (model != null && model.get是否可用() == "可用" && model.get是否使用() == "否") {
+        if (model != null) {
             lq_model = model;
             showDialog(model.get领取金额());
         } else {
@@ -379,17 +383,29 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         });
         TextView hb_pay_tv = (TextView) inflate.findViewById(R.id.hb_pay_tv);
         RelativeLayout hb_pay_rl = (RelativeLayout) inflate.findViewById(R.id.hb_pay_rl);
+        Double price1 = 0.0;
+        try {
+            price1 = Double.parseDouble(feiyong.getTotalfee()) - Double.parseDouble(lq_model.get领取金额());
+            if (price1 <= 0) {
+                price1 = 0.01;
+            }
+        } catch (Exception e) {
+            price1 = Double.parseDouble(feiyong.getTotalfee());
+        }
+        BigDecimal b = new BigDecimal(price1);
+        price1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         if (num != "0") {
             hb_pay_tv.setText("红包金额：" + num + "元");
             hb_pay_rl.setVisibility(View.VISIBLE);
+            pay_tv.setText(price1 + "元");
         } else {
+            pay_tv.setText(price1 + "元");
             hb_pay_rl.setVisibility(View.GONE);
         }
         zfb_pay_rl.setOnClickListener(v -> {
             wx_cb.setChecked(false);
             zfb_cb.setChecked(true);
         });
-        pay_tv.setText(feiyong.getTotalfee() + "元");
         pay_btn.setOnClickListener(v -> {
             if (lq_model != null) {
                 save.setHbid(lq_model.get编号());
@@ -634,9 +650,20 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     @Override
     public void saveResult(String orderId, String price) {
         bottom_dialog.dismiss();
+        Double price1 = 0.0;
+        try {
+            price1 = Double.parseDouble(price) - Double.parseDouble(lq_model.get领取金额());
+            if (price1 <= 0) {
+                price1 = 0.01;
+            }
+        } catch (Exception e) {
+            price1 = Double.parseDouble(price);
+        }
+        BigDecimal b = new BigDecimal(price1);
+        price1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         if (orderId != null) {
             if (!pay_is_wx) {
-                String orderInfo = getOrderInfo("易快跑", "易快跑支付", price, orderId);
+                String orderInfo = getOrderInfo("易快跑", "易快跑支付", price1 + "", orderId);
                 String sign = sign(orderInfo);
                 try {
                     sign = URLEncoder.encode(sign, "UTF-8");
@@ -660,7 +687,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                 Thread payThread = new Thread(payRunnable);
                 payThread.start();
             } else {
-                new MyThread(orderId, price).start();
+                new MyThread(orderId, price1 + "").start();
             }
         } else {
 
