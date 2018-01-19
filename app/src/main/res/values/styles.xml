@@ -16,6 +16,11 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="shop_detail_tv">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">20dp</item>
+    </style>
+
     <style name="ActionSheetDialogStyle" parent="@android:style/Theme.Dialog">
 
         <!-- 背景透明 -->

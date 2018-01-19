@@ -70,10 +70,21 @@ public class MainSectionedAdapter extends SectionedBaseAdapter {
         layout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Toast.makeText(mContext, rightStr.get(section).get(position).getClassname(), Toast.LENGTH_SHORT).show();
+
+                click.onClick(section, position);
             }
         });
         return layout;
+    }
+
+    TagClick click;
+
+    public void setClick(TagClick click) {
+        this.click = click;
+    }
+
+    public interface TagClick {
+        void onClick(int section, int position);
     }
 
     @Override

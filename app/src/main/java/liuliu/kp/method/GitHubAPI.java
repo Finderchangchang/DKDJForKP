@@ -7,6 +7,7 @@ import liuliu.kp.model.GroupModel;
 import liuliu.kp.model.HBModel;
 import liuliu.kp.model.HBsModel;
 import liuliu.kp.model.MessageModel;
+import liuliu.kp.model.ShopModel;
 import liuliu.kp.model.VersionModel;
 import liuliu.kp.model.WXModel;
 import retrofit2.http.GET;
@@ -81,6 +82,10 @@ public interface GitHubAPI {
     //获得城市列表
     @GET("App/Cpaotui/getShopFenlei.aspx")
     Observable<GroupModel> getShopFenlei(@Query("cityid") String cityid);
+
+    //获得城市列表
+    @GET("App/Cpaotui/getShopFenleiShop.aspx")
+    Observable<ShopModel> getShopDetail(@Query("cityid") String cityid);
 
     @GET("download/version.aspx?c=4")
     Observable<VersionModel> checkUpdate();

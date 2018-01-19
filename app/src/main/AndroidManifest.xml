@@ -115,10 +115,9 @@
         <activity
             android:name=".ui.RedPackageActivity"
             android:exported="true"
-            android:theme="@style/translucent"></activity>
-        <activity android:name=".config.ShopListActivity">
-
-        </activity>
+            android:theme="@style/translucent" />
+        <activity android:name=".config.ShopListActivity"></activity>
+        <activity android:name=".ui.ShopDetailActivity"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package liuliu.kp.config;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,7 @@ import liuliu.kp.method.HttpUtil;
 import liuliu.kp.method.Utils;
 import liuliu.kp.model.GroupModel;
 import liuliu.kp.model.ShopModel;
+import liuliu.kp.ui.ShopDetailActivity;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -67,13 +69,12 @@ public class ShopListActivity extends AppCompatActivity {
                         adapter = new LeftListAdapter(this, left_list, flagArray);
                         leftListview.setAdapter(adapter);
                         sectionedAdapter = new MainSectionedAdapter(this, left_list, right_list);
+                        sectionedAdapter.setClick((section, position) ->
+                                Utils.IntentPost(ShopDetailActivity.class, intent -> {
+                                    intent.putExtra("shop_id", right_list.get(section).get(position).getId());
+                                }));
                         pinnedListView.setAdapter(sectionedAdapter);
-                        pinnedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(ShopListActivity.context, position + "", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+
                         pinnedListView.setOnScrollListener(new AbsListView.OnScrollListener() {
                             @Override
                             public void onScrollStateChanged(AbsListView arg0, int scrollState) {
