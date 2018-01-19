@@ -33,6 +33,7 @@ import net.tsz.afinal.FinalDb;
 import net.tsz.afinal.view.TitleBar;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 
 import butterknife.Bind;
@@ -428,9 +429,20 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
     @Override
     public void saveResult(String orderId, String totalPrice) {
         bottom_dialog.dismiss();
+        Double price = 0.0;
+        try {
+            price = Double.parseDouble(totalPrice) - Double.parseDouble(lq_model.get领取金额());
+            if (price <= 0) {
+                price = 0.01;
+            }
+        } catch (Exception e) {
+            price = Double.parseDouble(totalPrice);
+        }
+        BigDecimal b = new BigDecimal(price);
+        price = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         if (orderId != null) {
             if (!pay_is_wx) {
-                String orderInfo = getOrderInfo("易快跑", "易快跑支付", totalPrice, orderId);
+                String orderInfo = getOrderInfo("易快跑", "易快跑支付", price + "", orderId);
                 String sign = sign(orderInfo);
                 try {
                     sign = URLEncoder.encode(sign, "UTF-8");
@@ -454,9 +466,10 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                 Thread payThread = new Thread(payRunnable);
                 payThread.start();
             } else {
-                new MyThread(orderId, totalPrice).start();
+                new MyThread(orderId, price + "").start();
             }
         }
+
     }
 
     @Override
@@ -679,16 +692,29 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
         pay_btn.setOnClickListener(v -> {
             if (lq_model != null) {
                 save.setHbid(lq_model.get编号());
-            } else {
-                mListener.saveOrder(save);//生成预订单，调起支付
             }
+            mListener.saveOrder(save);//生成预订单，调起支付
         });
         TextView hb_pay_tv = (TextView) inflate.findViewById(R.id.hb_pay_tv);
         RelativeLayout hb_pay_rl = (RelativeLayout) inflate.findViewById(R.id.hb_pay_rl);
+        Double price1 = 0.0;
+        try {
+            price1 = Double.parseDouble(feiyong.getTotalfee()) - Double.parseDouble(lq_model.get领取金额());
+            if (price1 <= 0) {
+                price1 = 0.01;
+            }
+        } catch (Exception e) {
+            price1 = Double.parseDouble(feiyong.getTotalfee());
+        }
+        BigDecimal b = new BigDecimal(price1);
+        price1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+
         if (num != "0") {
             hb_pay_tv.setText("红包金额：" + num + "元");
             hb_pay_rl.setVisibility(View.VISIBLE);
+            pay_tv.setText(price1 + "元");
         } else {
+            pay_tv.setText(price1 + "元");
             hb_pay_rl.setVisibility(View.GONE);
         }
         ImageView dialog_close_iv = (ImageView) inflate.findViewById(R.id.dialog_close_iv);

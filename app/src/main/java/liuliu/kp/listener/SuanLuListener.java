@@ -61,11 +61,11 @@ public class SuanLuListener implements ISuanLuMView {
         }
         map.put("address1", model.getAddress1());
         map.put("address2", model.getAddress2());
-        if (model.getTel1() != null) {
-            map.put("tel1", model.getTel2());
-        }
         if (model.getTel2() != null) {
-            map.put("tel2", model.getTel1());
+            map.put("tel2", model.getTel2());
+        }
+        if (model.getTel1() != null) {
+            map.put("tel1", model.getTel1());
         }
         if (model.getIsknow() != null) {
             map.put("isknow", model.getIsknow());
@@ -78,14 +78,18 @@ public class SuanLuListener implements ISuanLuMView {
         map.put("lichengfee", model.getLichengfee());
         map.put("totalfee", model.getTotalfee());
         map.put("juli", model.getJuli());
+        if (model.getLat2() != null) {
+            map.put("lat2", model.getLat2());
+        }
+        if (model.getLng2() != null) {
+            map.put("lng2", model.getLng2());
+        }
         if (model.getLat1() != null) {
-            map.put("lat1", model.getLat2());
+            map.put("lat1", model.getLat1());
         }
-        if (model.getLng1() != null) {
-            map.put("lng1", model.getLng2());
+        if (model.getLat1() != null) {
+            map.put("lng1", model.getLng1());
         }
-        map.put("lat2", model.getLat1());
-        map.put("lng2", model.getLng1());
         map.put("isdaishoufee", model.getIsdaishoufee());
         if (model.getDaishoufee() != null) {
             map.put("daishoufee", model.getDaishoufee());
@@ -109,7 +113,6 @@ public class SuanLuListener implements ISuanLuMView {
                         mBuy.saveResult(null, "0");
                     }
                 }, error -> {
-                    String s = "";
                     mBuy.saveResult(null, "0");
                 });
     }

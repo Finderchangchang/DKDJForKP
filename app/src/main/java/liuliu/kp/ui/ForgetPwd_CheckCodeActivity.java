@@ -1,5 +1,6 @@
 package liuliu.kp.ui;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -191,14 +192,23 @@ public class ForgetPwd_CheckCodeActivity extends BaseActivity implements TextWat
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(model -> {
                             if (("1").equals(model.getSuccess())) {
+                                Utils.IntentPost(MainActivity.class, new Utils.putListener() {
+                                    @Override
+                                    public void put(Intent intent) {
+                                        intent.putExtra("can_run", true);
+                                    }
+                                });
+                                if (MainActivity.mInstails != null) {
+                                    MainActivity.mInstails.finish();
+                                }
                                 if (LoginActivity.mIntail != null) {
                                     LoginActivity.mIntail.finish();//关闭登录页面
                                 }
                                 ForgetPwd_CheckCodeActivity.this.finish();//关闭当前页面
                                 if (model.getData() != null) {
                                     Utils.putCache(Key.KEY_UserId, model.getData().getUserId());
-                                    Utils.putCache("tel", tel);
                                 }
+                                Utils.putCache("tel", tel);
                             } else {
                                 ToastShort(model.getErrorMsg());
                             }
