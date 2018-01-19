@@ -106,6 +106,16 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/select_shop_tv"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:text="选择店铺" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -426,10 +436,10 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:visibility="visible"
-                android:layout_marginLeft="10dp">
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/total_price_tv"
@@ -449,7 +459,7 @@
                     android:text="商品：未支付商品费用"
                     android:textColor="@color/dk_blue"
                     android:textSize="12sp"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </LinearLayout>
 
             <ImageView

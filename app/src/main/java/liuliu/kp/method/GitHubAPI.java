@@ -3,6 +3,7 @@ package liuliu.kp.method;
 import java.util.Map;
 
 import liuliu.kp.model.ALiModel;
+import liuliu.kp.model.GroupModel;
 import liuliu.kp.model.HBModel;
 import liuliu.kp.model.HBsModel;
 import liuliu.kp.model.MessageModel;
@@ -75,6 +76,11 @@ public interface GitHubAPI {
     //获得城市列表
     @GET("App/Cpaotui/GetCityList.aspx")
     Observable<MessageModel> getCityList();
+
+
+    //获得城市列表
+    @GET("App/Cpaotui/getShopFenlei.aspx")
+    Observable<GroupModel> getShopFenlei(@Query("cityid") String cityid);
 
     @GET("download/version.aspx?c=4")
     Observable<VersionModel> checkUpdate();

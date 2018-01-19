@@ -18,4 +18,8 @@
     <color name="orderzihui">#999999</color>
     <color name="ordertypezi">#7aa032</color>
     <color name="ttt">#44000000</color>
+    <color name="gray_background_right">#FAFAFA</color>
+    <color name="black">#444444</color>
+    <color name="white">#ffffff</color>
+    <color name="gray_light">#EBEDF0</color>
 </resources>

@@ -44,6 +44,8 @@ import butterknife.ButterKnife;
 import liuliu.kp.R;
 import liuliu.kp.base.BaseActivity;
 import liuliu.kp.config.Key;
+import liuliu.kp.config.ShopListActivity;
+import liuliu.kp.config.Util;
 import liuliu.kp.listener.AddressManageListener;
 import liuliu.kp.listener.HBListener;
 import liuliu.kp.listener.SuanLuListener;
@@ -125,6 +127,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     private View inflate;
     @Bind(R.id.select_tel_tv)
     TextView select_tel_tv;
+    @Bind(R.id.select_shop_tv)
+    TextView select_shop_tv;
     AddressManageListener addressManageListener;
     WxUtil wxUtil = new WxUtil();
 
@@ -135,6 +139,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         mInstail = this;
         telEt.setText(getCache("tel"));
         titleBar.setLeftClick(() -> finish());
+        select_shop_tv.setOnClickListener(v -> Utils.IntentPost(ShopListActivity.class));
         save = new SaveOrderModel();
         addressManageListener = new AddressManageListener(this);
         inflate = LayoutInflater.from(this).inflate(R.layout.dialog_pay, null);
