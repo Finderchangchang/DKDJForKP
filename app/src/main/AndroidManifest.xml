@@ -99,8 +99,8 @@
         <!--  -->
         <!--  -->
         <!-- </meta-data> -->
-        <!--ff7419a50cf66dcb27a4f2d22536dff3 公司电脑-->
-        <!--fecd131215e4840e9b59a8c65354d353 家里-->
+        <!-- ff7419a50cf66dcb27a4f2d22536dff3 公司电脑 -->
+        <!-- fecd131215e4840e9b59a8c65354d353 家里 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="ff7419a50cf66dcb27a4f2d22536dff3" />
@@ -114,9 +114,8 @@
         <activity
             android:name=".ui.RedPackageActivity"
             android:exported="true"
-            android:theme="@style/translucent">
-
-        </activity>
+            android:theme="@style/translucent"></activity>
+        <activity android:name=".ui.LauncherActivity"></activity>
     </application>
 
 </manifest>
