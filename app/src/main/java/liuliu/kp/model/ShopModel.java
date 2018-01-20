@@ -1,5 +1,6 @@
 package liuliu.kp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * QQ群481606175
  */
 
-public class ShopModel {
+public class ShopModel  implements Serializable{
 
     /**
      * state : 1
@@ -43,7 +44,7 @@ public class ShopModel {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * id : 1
          * classname : 苹果

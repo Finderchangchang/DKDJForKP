@@ -15,6 +15,10 @@ import android.widget.ListAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import liuliu.kp.R;
+
 /**
  * Created by liuliu on 2015/11/16   16:29
  *
@@ -187,6 +191,22 @@ public class CommonViewHolder {
     public CommonViewHolder setImageResource(int viewId, int drawableId) {
         ImageView view = getView(viewId);
         view.setImageResource(drawableId);
+        return this;
+    }
+
+    /**
+     * 为ImageView设置图片
+     *
+     * @param viewId
+     * @param drawableId
+     * @return
+     */
+    public CommonViewHolder setImageURL(int viewId, String url) {
+        ImageView view = getView(viewId);
+        Glide.with(mContext)
+                .load(url)
+                .placeholder(R.mipmap.iconb)
+                .into(view);
         return this;
     }
 

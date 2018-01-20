@@ -3,6 +3,7 @@ package liuliu.kp.config;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -20,6 +21,7 @@ import liuliu.kp.R;
 import liuliu.kp.method.HttpUtil;
 import liuliu.kp.method.Utils;
 import liuliu.kp.model.GroupModel;
+import liuliu.kp.model.PoiModel;
 import liuliu.kp.model.ShopModel;
 import liuliu.kp.ui.ShopDetailActivity;
 import rx.android.schedulers.AndroidSchedulers;
@@ -69,10 +71,13 @@ public class ShopListActivity extends AppCompatActivity {
                         adapter = new LeftListAdapter(this, left_list, flagArray);
                         leftListview.setAdapter(adapter);
                         sectionedAdapter = new MainSectionedAdapter(this, left_list, right_list);
-                        sectionedAdapter.setClick((section, position) ->
-                                Utils.IntentPost(ShopDetailActivity.class, intent -> {
-                                    intent.putExtra("shop_id", right_list.get(section).get(position).getId());
-                                }));
+                        sectionedAdapter.setClick((section, position) -> {
+                            now_section = section;
+                            now_position = position;
+                            Intent intent = new Intent(this, ShopDetailActivity.class);
+                            intent.putExtra("shop_id", right_list.get(section).get(position).getId());
+                            startActivityForResult(intent, 12);
+                        });
                         pinnedListView.setAdapter(sectionedAdapter);
 
                         pinnedListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -157,6 +162,27 @@ public class ShopListActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    int now_section = 0;
+    int now_position = 0;
+    PoiModel poiModel;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 11) {
+            ShopModel.DataBean key = (ShopModel.DataBean) data.getSerializableExtra("model");
+            if (key != null) {
+                Intent intent = new Intent();
+                poiModel.setLat(Double.parseDouble(key.getLat()));
+                poiModel.setLng(Double.parseDouble(key.getLng()));
+                poiModel.setDetailAddress(key.getAddress());
+                intent.putExtra("val", poiModel);
+                setResult(8, intent);
+                finish();//关闭当前页面
+            }
+        }
     }
 
     @Override

@@ -32,26 +32,7 @@
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.StartActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <data android:scheme="growing.1bd9187d050f8887" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="wx91664201904be69e" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.OrderDetailsActivity" />
         <activity android:name=".ui.CityActivity" />
@@ -104,7 +85,7 @@
         <!-- 6863fffa97d83c1b904a0784425f6925 正式地址 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="fecd131215e4840e9b59a8c65354d353" />
+            android:value="ff7419a50cf66dcb27a4f2d22536dff3" />
 
         <service android:name="com.amap.api.location.APSService" />
 
@@ -116,8 +97,30 @@
             android:name=".ui.RedPackageActivity"
             android:exported="true"
             android:theme="@style/translucent" />
-        <activity android:name=".config.ShopListActivity"></activity>
-        <activity android:name=".ui.ShopDetailActivity"></activity>
+        <activity android:name=".config.ShopListActivity" />
+        <activity android:name=".ui.ShopDetailActivity" />
+        <activity android:name=".ui.GGActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="growing.1bd9187d050f8887" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="wx91664201904be69e" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

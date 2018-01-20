@@ -49,12 +49,12 @@
         android:paddingLeft="20dp"
         android:text="123123" />
 
-    <com.youth.banner.Banner
-        android:id="@+id/main_title_ban"
+    <GridView
+        android:id="@+id/img_gv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
-
+        android:layout_weight="1"
+        android:numColumns="2" />
     <Button
         android:id="@+id/select_shop_btn"
         android:layout_width="match_parent"
