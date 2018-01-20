@@ -166,7 +166,7 @@ public class ShopListActivity extends AppCompatActivity {
 
     int now_section = 0;
     int now_position = 0;
-    PoiModel poiModel;
+    PoiModel poiModel = new PoiModel();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

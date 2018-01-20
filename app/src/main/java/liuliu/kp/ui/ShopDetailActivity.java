@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.youth.banner.Banner;
 
@@ -30,17 +31,26 @@ public class ShopDetailActivity extends BaseActivity {
     CommonAdapter<ImgModel> adapter;
     List<ImgModel> list = new ArrayList();
     Button select_shop_btn;
+    TextView shop_name_tv;
+    TextView shop_tel_tv;
+    TextView shop_xiangmu_tv;
+    TextView shop_address_tv;
 
     @Override
     public void initViews() {
         setContentView(R.layout.activity_shop_detail);
         img_gv = (GridView) findViewById(R.id.img_gv);
+        shop_tel_tv = (TextView) findViewById(R.id.shop_tel_tv);
+        shop_name_tv = (TextView) findViewById(R.id.shop_name_tv);
+        shop_xiangmu_tv = (TextView) findViewById(R.id.shop_xiangmu_tv);
+        shop_address_tv = (TextView) findViewById(R.id.shop_address_tv);
+
         select_shop_btn = (Button) findViewById(R.id.select_shop_btn);
         adapter = new CommonAdapter<ImgModel>(this, list, R.layout.item_img) {
             @Override
             public void convert(CommonViewHolder holder, ImgModel imgModel, int position) {
                 holder.setImageURL(R.id.img_iv, imgModel.getUrl());
-                holder.setBGText(R.id.title_tv, imgModel.getTitle());
+                holder.setText(R.id.title_tv, imgModel.getTitle());
             }
         };
         img_gv.setAdapter(adapter);
@@ -66,6 +76,11 @@ public class ShopDetailActivity extends BaseActivity {
                         if (model.getData().size() > 0) {
                             key = model.getData().get(0);
                             if (key != null) {
+                                shop_name_tv.setText("商家名字：" + key.getName());
+                                shop_tel_tv.setText("联系电话：" + key.getPhone());
+                                shop_xiangmu_tv.setText("经营项目：" + key.getXiangmu());
+                                shop_address_tv.setText("商家地址：" + key.getAddress());
+
                                 list.add(new ImgModel(key.getZhizhao(), "营业执照"));
                                 list.add(new ImgModel(key.getCard1(), "法人身份证"));
                                 list.add(new ImgModel(key.getCard2(), "法人身份证反面"));

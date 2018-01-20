@@ -104,11 +104,17 @@ public class GGActivity extends AppCompatActivity {
         });
     }
 
+    void closeThis() {
+        if (MainActivity.mInstails == null) {
+            Utils.IntentPost(MainActivity.class);
+            finish();
+        }
+    }
+
     private void changeTag(int position) {
         if (position == 3) {
             now_position = 3;
-            Utils.IntentPost(MainActivity.class);
-            finish();
+            closeThis();
         } else {
             now_position = position;
             now_time = 3;
@@ -131,8 +137,7 @@ public class GGActivity extends AppCompatActivity {
                 djs_tv.setText(now_time + "s");
                 handler.postDelayed(this, 1000);
             } else {
-                Utils.IntentPost(MainActivity.class);
-                finish();//关闭当前页面
+                closeThis();
             }
         }
     };
@@ -196,8 +201,7 @@ public class GGActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 now_position = 3;
-                Utils.IntentPost(MainActivity.class);
-                finish();
+                closeThis();
             }
         });
     }
