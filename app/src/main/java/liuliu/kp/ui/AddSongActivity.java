@@ -40,7 +40,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import liuliu.kp.R;
 import liuliu.kp.base.BaseActivity;
+import liuliu.kp.base.BaseApplication;
 import liuliu.kp.config.Key;
+import liuliu.kp.config.ShopListActivity;
 import liuliu.kp.listener.AddressManageListener;
 import liuliu.kp.listener.HBListener;
 import liuliu.kp.listener.SuanLuListener;
@@ -165,6 +167,14 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
         dialog = Utils.ProgressDialog(this, "算路中，请稍后...", true);
         buy_poi = (PoiModel) getIntent().getSerializableExtra("model");
         isSong = getIntent().getBooleanExtra("isSong", true);
+        select_shop_ll.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ShopListActivity.class);
+            if (isSong) {
+                startActivityForResult(intent, 1);
+            } else {
+                startActivityForResult(intent, 0);
+            }
+        });
         title_bar.setRightClick(() -> Utils.IntentPost(WebActivity.class, intent -> intent.putExtra("web", "计价标准")));
         if (isSong) {
             title_bar.setCenter_str("送东西");
@@ -202,6 +212,8 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
     LinearLayout tel1_ll;
     @Bind(R.id.tel2_ll)
     LinearLayout tel2_ll;
+    @Bind(R.id.select_shop_ll)
+    LinearLayout select_shop_ll;
 
     @Override
     public void initEvents() {
@@ -211,6 +223,7 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
             firstIsbuy = !firstIsbuy;
             loadUI();
         });
+
         changeAddressIvs.setOnClickListener(v -> {
             tel1 = tel1Et.getText().toString().trim();
             tel2 = tel2Et.getText().toString().trim();
@@ -294,11 +307,17 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                 } else {
                     ToastShort("请选择发货地址");
                 }
-            } else if (("").equals(tel1_str) || !Utils.isMobileNo(tel1_str)) {
+            } else if (("").equals(tel1_str)) {
                 ToastShort("发货人电话不正确");
-            } else if (("").equals(tel2) || !Utils.isMobileNo(tel2_str)) {
+            } else if (("").equals(tel2)) {
                 ToastShort("收货人电话不正确");
-            } else if (("").equals(goodTypeEt.getText().toString().trim())) {
+            }
+//            else if (("").equals(tel1_str) || !Utils.isMobileNo(tel1_str)) {
+//                ToastShort("发货人电话不正确");
+//            } else if (("").equals(tel2) || !Utils.isMobileNo(tel2_str)) {
+//                ToastShort("收货人电话不正确");
+//            }
+            else if (("").equals(goodTypeEt.getText().toString().trim())) {
                 ToastShort("请填写物品类型");
             } else {
                 if (isSong) {
@@ -442,7 +461,8 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
         price = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         if (orderId != null) {
             if (!pay_is_wx) {
-                String orderInfo = getOrderInfo("易快跑", "易快跑支付", price + "", orderId);
+                String orderInfo = getOrderInfo(BaseApplication.getContext().getResources().getString(R.string.app_name),
+                        BaseApplication.getContext().getResources().getString(R.string.app_name) + "支付", price + "", orderId);
                 String sign = sign(orderInfo);
                 try {
                     sign = URLEncoder.encode(sign, "UTF-8");
@@ -501,7 +521,8 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
         }
 
         public void run() {
-            wxUtil.load(AddSongActivity.this, "易快跑", "易快跑支付", Order_Id, Order_Price);
+            wxUtil.load(AddSongActivity.this, BaseApplication.getContext().getResources().getString(R.string.app_name),
+                    BaseApplication.getContext().getResources().getString(R.string.app_name) + "支付", Order_Id, Order_Price);
         }
     }
 

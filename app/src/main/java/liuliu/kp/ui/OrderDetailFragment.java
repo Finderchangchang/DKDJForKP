@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import liuliu.kp.R;
+import liuliu.kp.base.BaseApplication;
 import liuliu.kp.config.Key;
 import liuliu.kp.listener.OrderListener;
 import liuliu.kp.method.Utils;
@@ -342,7 +343,7 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         pay_btn.setOnClickListener(v -> {
             if (orderId != null) {
                 if (!pay_is_wx) {
-                    String orderInfo = getOrderInfo("易快跑", "易快跑支付", price, orderId);
+                    String orderInfo = getOrderInfo(getResources().getString(R.string.app_name), getResources().getString(R.string.app_name)+"支付", price, orderId);
                     String sign = sign(orderInfo);
                     try {
                         sign = URLEncoder.encode(sign, "UTF-8");
@@ -401,7 +402,7 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         }
 
         public void run() {
-            wxUtil.load(OrderDetailsActivity.mInstails, "易快跑", "易快跑支付", Order_Id, Order_Price);
+            wxUtil.load(OrderDetailsActivity.mInstails, BaseApplication.getContext().getResources().getString(R.string.app_name), BaseApplication.getContext().getResources().getString(R.string.app_name)+"支付", Order_Id, Order_Price);
         }
     }
 

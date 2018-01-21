@@ -31,7 +31,7 @@ import liuliu.kp.model.CityModel;
  */
 
 public class SearchPoiActivity extends BaseActivity {
-    private String city = "保定";
+    private String city = "";
     @Bind(R.id.title_bar)
     TitleBar titleBar;
     @Bind(R.id.input_edittext)

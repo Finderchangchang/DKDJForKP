@@ -188,7 +188,7 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
         }
 
         public void run() {
-            wxUtil.load(OrderListActivity.mIntails, "易快跑", "易快跑支付", Order_Id, (int) (Order_Price * 100));
+            wxUtil.load(OrderListActivity.mIntails, BaseApplication.getContext().getResources().getString(R.string.app_name), BaseApplication.getContext().getResources().getString(R.string.app_name)+"支付", Order_Id, (int) (Order_Price * 100));
         }
     }
 
@@ -249,7 +249,7 @@ public class OrderFragment extends Fragment implements IOrder, IHB {
 
             if (Order_Id != null) {
                 if (!pay_is_wx) {
-                    String orderInfo = getOrderInfo("易快跑", "易快跑支付", Order_Price + "", Order_Id);
+                    String orderInfo = getOrderInfo(BaseApplication.getContext().getResources().getString(R.string.app_name), BaseApplication.getContext().getResources().getString(R.string.app_name)+"支付", Order_Price + "", Order_Id);
                     String sign = sign(orderInfo);
                     try {
                         sign = URLEncoder.encode(sign, "UTF-8");

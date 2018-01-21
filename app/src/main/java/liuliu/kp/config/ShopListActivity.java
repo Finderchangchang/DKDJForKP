@@ -24,6 +24,7 @@ import liuliu.kp.model.GroupModel;
 import liuliu.kp.model.PoiModel;
 import liuliu.kp.model.ShopModel;
 import liuliu.kp.ui.ShopDetailActivity;
+import liuliu.kp.ui.ShopsActivity;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -57,9 +58,9 @@ public class ShopListActivity extends AppCompatActivity {
         context = this;
 
         Map<String, String> map = new HashMap<>();
-        String cid = Utils.getCache("cid");
+        String cid = Utils.getCache("cid");//18
         HttpUtil.load()
-                .getShopFenlei("18")
+                .getShopFenlei(cid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -74,9 +75,12 @@ public class ShopListActivity extends AppCompatActivity {
                         sectionedAdapter.setClick((section, position) -> {
                             now_section = section;
                             now_position = position;
-                            Intent intent = new Intent(this, ShopDetailActivity.class);
+                            Intent intent = new Intent(this, ShopsActivity.class);
                             intent.putExtra("shop_id", right_list.get(section).get(position).getId());
                             startActivityForResult(intent, 12);
+//                            Intent intent = new Intent(this, ShopDetailActivity.class);
+//                            intent.putExtra("shop_id", right_list.get(section).get(position).getId());
+//                            startActivityForResult(intent, 12);
                         });
                         pinnedListView.setAdapter(sectionedAdapter);
 
@@ -137,10 +141,12 @@ public class ShopListActivity extends AppCompatActivity {
                         });
                         //ToastShort("取消成功");
                     } else {
-                        //ToastShort("取消失败");
+                        finish();
+                        Toast.makeText(this, "当前无数据", Toast.LENGTH_SHORT).show();
                     }
                 }, error -> {
-                    String s = "";
+                    finish();
+                    Toast.makeText(this, "当前无数据", Toast.LENGTH_SHORT).show();
                 });
         leftListview.setOnItemClickListener((arg0, view, position, arg3) -> {
             isScroll = false;
@@ -172,16 +178,22 @@ public class ShopListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 11) {
-            ShopModel.DataBean key = (ShopModel.DataBean) data.getSerializableExtra("model");
-            if (key != null) {
-                Intent intent = new Intent();
-                poiModel.setLat(Double.parseDouble(key.getLat()));
-                poiModel.setLng(Double.parseDouble(key.getLng()));
-                poiModel.setDetailAddress(key.getAddress());
-                intent.putExtra("val", poiModel);
-                setResult(8, intent);
-                finish();//关闭当前页面
-            }
+//            ShopModel.DataBean key = (ShopModel.DataBean) data.getSerializableExtra("model");
+//            if (key != null) {
+//                Intent intent = new Intent();
+//                poiModel.setLat(Double.parseDouble(key.getLat()));
+//                poiModel.setLng(Double.parseDouble(key.getLng()));
+//                poiModel.setDetailAddress(key.getAddress());
+//                poiModel.setPoiName(key.getName());
+//                intent.putExtra("val", poiModel);
+//                setResult(8, intent);
+//                finish();//关闭当前页面
+//            }
+            Intent intent = new Intent();
+            poiModel = (PoiModel) data.getSerializableExtra("val");
+            intent.putExtra("val", poiModel);
+            setResult(8, intent);
+            finish();//关闭当前页面
         }
     }
 

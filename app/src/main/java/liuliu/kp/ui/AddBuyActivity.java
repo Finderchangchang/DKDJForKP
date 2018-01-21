@@ -43,6 +43,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import liuliu.kp.R;
 import liuliu.kp.base.BaseActivity;
+import liuliu.kp.base.BaseApplication;
 import liuliu.kp.config.Key;
 import liuliu.kp.config.ShopListActivity;
 import liuliu.kp.config.Util;
@@ -127,8 +128,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     private View inflate;
     @Bind(R.id.select_tel_tv)
     TextView select_tel_tv;
-    @Bind(R.id.select_shop_tv)
-    TextView select_shop_tv;
+    @Bind(R.id.select_shop_ll)
+    LinearLayout select_shop_ll;
     AddressManageListener addressManageListener;
     WxUtil wxUtil = new WxUtil();
 
@@ -139,7 +140,10 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         mInstail = this;
         telEt.setText(getCache("tel"));
         titleBar.setLeftClick(() -> finish());
-        select_shop_tv.setOnClickListener(v -> Utils.IntentPost(ShopListActivity.class));
+        select_shop_ll.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ShopListActivity.class);
+            startActivityForResult(intent, 0);
+        });
         save = new SaveOrderModel();
         addressManageListener = new AddressManageListener(this);
         inflate = LayoutInflater.from(this).inflate(R.layout.dialog_pay, null);
@@ -223,9 +227,11 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                 } else if (send_poi == null) {
                     ToastShort(!firstIsbuy ? "请选择购买地址" : "请选择收货地址");
                 }
-            } else if (("").equals(telEt.getText().toString().trim())) {
-                ToastShort("请填写联系电话");
-            } else if (("").equals(jeEt.getText().toString().trim()) && !noKnowPriceRb.isChecked()) {
+            }
+//            else if (("").equals(telEt.getText().toString().trim())) {
+//                ToastShort("请填写联系电话");
+//            }
+            else if (("").equals(jeEt.getText().toString().trim()) && !noKnowPriceRb.isChecked()) {
                 ToastShort("请输入商品金额");
             } else {
                 save.setOrdertype("1");
@@ -359,7 +365,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         }
 
         public void run() {
-            wxUtil.load(AddBuyActivity.this, "易快跑", "易快跑支付", Order_Id, Order_Price);
+            wxUtil.load(AddBuyActivity.this, BaseApplication.getContext().getResources().getString(R.string.app_name), BaseApplication.getContext().getResources().getString(R.string.app_name)+"支付", Order_Id, Order_Price);
         }
     }
 
@@ -668,7 +674,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         price1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         if (orderId != null) {
             if (!pay_is_wx) {
-                String orderInfo = getOrderInfo("易快跑", "易快跑支付", price1 + "", orderId);
+                String orderInfo = getOrderInfo(BaseApplication.getContext().getResources().getString(R.string.app_name),
+                        BaseApplication.getContext().getResources().getString(R.string.app_name)+"支付", price1 + "", orderId);
                 String sign = sign(orderInfo);
                 try {
                     sign = URLEncoder.encode(sign, "UTF-8");

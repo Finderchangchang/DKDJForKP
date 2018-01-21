@@ -138,6 +138,12 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
         broadcastManager.registerReceiver(mItemViewListClickReceiver, intentFilter);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        MainActivity.mInstails = null;
+    }
+
     /**
      * 初始化需要循环的View
      * 为了灵活的使用滚动的View，所以把滚动的内容让用户自定义
@@ -267,6 +273,7 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
                             city_name_tv.setText(result.getRegeocodeAddress().getCity());
                             List<CityModel> list = db.findAllByWhere(CityModel.class, "cname='" + result.getRegeocodeAddress().getCity() + "'");
                             if (list.size() > 0) {
+                                Utils.putCache("cname",result.getRegeocodeAddress().getCity());
                                 Utils.putCache("cid", list.get(0).getCid());
                                 mListener.loadQSLatLngs(list.get(0).getCid());
                             } else {
@@ -368,6 +375,13 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
                 if (city != null) {
                     aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(city.getLat()), Double.parseDouble(city.getLng())), 16));
                     city_name_tv.setText(city.getCname() + "市");
+                    List<CityModel> list = db.findAllByWhere(CityModel.class, "cname='" + city.getCname() + "市'");
+                    if (list.size() > 0) {
+                        Utils.putCache("cid", list.get(0).getCid());
+                        mListener.loadQSLatLngs(list.get(0).getCid());
+                    } else {
+                        Utils.putCache("cid", "");
+                    }
                 }
                 break;
         }

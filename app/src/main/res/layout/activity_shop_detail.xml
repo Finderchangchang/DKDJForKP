@@ -17,44 +17,106 @@
         android:layout_height="0.1dp"
         android:background="@color/list_item_line" />
 
-    <TextView
-        android:id="@+id/shop_name_tv"
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:text="123123" />
+        android:layout_height="230dp" />
 
-    <TextView
-        android:id="@+id/shop_tel_tv"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:text="123123" />
+        android:layout_height="1dp"
+        android:background="@color/list_item_line" />
 
-    <TextView
-        android:id="@+id/shop_xiangmu_tv"
+    <LinearLayout
+        android:id="@+id/tel_ll"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:text="123123" />
+        android:orientation="horizontal"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp">
 
-    <TextView
-        android:id="@+id/shop_address_tv"
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginLeft="20dp"
+            android:src="@mipmap/ding" />
+
+        <TextView
+            android:id="@+id/shop_xiangmu_tv"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="123123" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/tell" />
+    </LinearLayout>
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="1dp"
+        android:background="@color/list_item_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:text="123123" />
+        android:orientation="horizontal"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginLeft="20dp"
+            android:src="@mipmap/mulu" />
+
+        <TextView
+            android:id="@+id/shop_address_tv"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_item_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:text="商家收款码：" />
+
+        <ImageView
+            android:id="@+id/sk_iv"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+    </LinearLayout>
 
     <GridView
         android:id="@+id/img_gv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:numColumns="2" />
+        android:numColumns="2"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/select_shop_btn"
         android:layout_width="match_parent"

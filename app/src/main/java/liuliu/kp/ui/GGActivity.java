@@ -15,13 +15,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import net.tsz.afinal.FinalDb;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import liuliu.kp.R;
 import liuliu.kp.config.DepthPageTransformer;
 import liuliu.kp.config.ViewPagerAdatper;
+import liuliu.kp.method.HttpUtil;
 import liuliu.kp.method.Utils;
+import liuliu.kp.model.CityModel;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * 广告页面
@@ -112,8 +118,8 @@ public class GGActivity extends AppCompatActivity {
     }
 
     private void changeTag(int position) {
-        if (position == 3) {
-            now_position = 3;
+        if (position == 2) {
+            now_position = 2;
             closeThis();
         } else {
             now_position = position;
@@ -127,7 +133,7 @@ public class GGActivity extends AppCompatActivity {
         @Override
         public void run() {
             Log.i("position", now_position + "--" + now_time);
-            if (now_position != 3) {
+            if (now_position != 2) {
                 if (now_time == 1) {
                     int p = now_position + 1;
                     changeTag(p);
@@ -153,7 +159,7 @@ public class GGActivity extends AppCompatActivity {
         mIn_ll.addView(mTwo_dot, layoutParams);
         mThree_dot = new ImageView(this);
         mThree_dot.setImageResource(R.drawable.gray_dot);
-        mIn_ll.addView(mThree_dot, layoutParams);
+        //mIn_ll.addView(mThree_dot, layoutParams);
         setClickListener();
     }
 
@@ -184,10 +190,10 @@ public class GGActivity extends AppCompatActivity {
         LayoutInflater lf = getLayoutInflater().from(GGActivity.this);
         View view1 = lf.inflate(R.layout.we_indicator1, null);
         View view2 = lf.inflate(R.layout.we_indicator2, null);
-        View view3 = lf.inflate(R.layout.we_indicator3, null);
+       // View view3 = lf.inflate(R.layout.we_indicator3, null);
         mViewList.add(view1);
         mViewList.add(view2);
-        mViewList.add(view3);
+        //mViewList.add(view3);
     }
 
     private void initView() {
@@ -200,10 +206,37 @@ public class GGActivity extends AppCompatActivity {
         skip_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                now_position = 3;
+                now_position = 2;
                 closeThis();
             }
         });
+        FinalDb db = FinalDb.create(this);
+        String userid = Utils.getCache("UserId");
+        if (userid == null) {
+            Utils.putCache("UserId", "");
+        }
+        HttpUtil.load()
+                .getCityList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    if (("1").equals(model.getSuccess())) {
+                        db.deleteAll(CityModel.class);//删除所有的城市。
+                        for (CityModel cityModel : model.getCitydata()) {
+                            db.save(cityModel);
+                        }
+                        //Utils.IntentPost(MainActivity.class);
+                        //finish();
+                    } else {
+                        //ToastShort(model.getErrorMsg());
+                        //Utils.IntentPost(MainActivity.class);
+                        //finish();
+                    }
+                }, error -> {
+                    //ToastShort("请检查网络连接");
+                    //Utils.IntentPost(MainActivity.class);
+                    //finish();
+                });
     }
 
 }

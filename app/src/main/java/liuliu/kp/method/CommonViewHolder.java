@@ -198,7 +198,6 @@ public class CommonViewHolder {
      * 为ImageView设置图片
      *
      * @param viewId
-     * @param drawableId
      * @return
      */
     public CommonViewHolder setImageURL(int viewId, String url) {

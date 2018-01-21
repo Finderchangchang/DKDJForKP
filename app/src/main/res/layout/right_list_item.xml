@@ -9,12 +9,13 @@
         android:id="@+id/imageItem"
         android:layout_width="@dimen/dp50"
         android:layout_height="@dimen/dp50"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textItem"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp50"
+        android:layout_height="30dp"
         android:layout_toRightOf="@+id/imageItem"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/dp6"

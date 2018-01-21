@@ -16,6 +16,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import liuliu.kp.R;
+import liuliu.kp.base.BaseActivity;
+import liuliu.kp.base.BaseApplication;
 import liuliu.kp.config.Util;
 
 import android.util.Xml;
@@ -132,7 +135,7 @@ public class WxUtil {
             List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
             packageParams.add(new BasicNameValuePair("appid", Utils.getCache("APP_ID")));
 
-            packageParams.add(new BasicNameValuePair("body", "易快跑-充值"));
+            packageParams.add(new BasicNameValuePair("body", BaseApplication.getContext().getResources().getString(R.string.app_name)+"-充值"));
             packageParams.add(new BasicNameValuePair("mch_id", Utils.getCache("MCH_ID")));
             packageParams.add(new BasicNameValuePair("nonce_str", nonceStr));
             packageParams.add(new BasicNameValuePair("notify_url", Utils.getCache("domain") + "/wx/userNotify.aspx"));//写你们的回调地址

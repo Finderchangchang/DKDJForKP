@@ -1,14 +1,20 @@
 package liuliu.kp.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.youth.banner.Banner;
+
+import net.tsz.afinal.view.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,84 +32,63 @@ import rx.schedulers.Schedulers;
 
 public class ShopDetailActivity extends BaseActivity {
 
-    String shop_id;
-    GridView img_gv;
-    CommonAdapter<ImgModel> adapter;
-    List<ImgModel> list = new ArrayList();
+    ShopModel.DataBean shop;
+    List<String> list = new ArrayList();
     Button select_shop_btn;
-    TextView shop_name_tv;
-    TextView shop_tel_tv;
     TextView shop_xiangmu_tv;
     TextView shop_address_tv;
+    TitleBar title_bar;
+    ImageView sk_iv;
+    Banner banner;
+    LinearLayout tel_ll;
 
     @Override
     public void initViews() {
         setContentView(R.layout.activity_shop_detail);
-        img_gv = (GridView) findViewById(R.id.img_gv);
-        shop_tel_tv = (TextView) findViewById(R.id.shop_tel_tv);
-        shop_name_tv = (TextView) findViewById(R.id.shop_name_tv);
+        banner = (Banner) findViewById(R.id.banner);
+        tel_ll = (LinearLayout) findViewById(R.id.tel_ll);
+        title_bar = (TitleBar) findViewById(R.id.title_bar);
+        title_bar.setLeftClick(() -> finish());
+        sk_iv = (ImageView) findViewById(R.id.sk_iv);
         shop_xiangmu_tv = (TextView) findViewById(R.id.shop_xiangmu_tv);
         shop_address_tv = (TextView) findViewById(R.id.shop_address_tv);
-
         select_shop_btn = (Button) findViewById(R.id.select_shop_btn);
-        adapter = new CommonAdapter<ImgModel>(this, list, R.layout.item_img) {
-            @Override
-            public void convert(CommonViewHolder holder, ImgModel imgModel, int position) {
-                holder.setImageURL(R.id.img_iv, imgModel.getUrl());
-                holder.setText(R.id.title_tv, imgModel.getTitle());
-            }
-        };
-        img_gv.setAdapter(adapter);
-        shop_id = getIntent().getStringExtra("shop_id");
+        banner.setImageLoader(new GlideImageLoader());
+        //设置图片集合
+        tel_ll.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + shop.getPhone()));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        });
+        shop = (ShopModel.DataBean) getIntent().getSerializableExtra("model");
+        if (shop != null) {
+            title_bar.setCenter_str(shop.getName());
+            shop_xiangmu_tv.setText("商家地址：" + shop.getAddress());
+            shop_address_tv.setText("经营项目：" + shop.getXiangmu());
+            list.add(shop.getImga());
+            list.add(shop.getImgb());
+            list.add(shop.getImgc());
+            list.add(shop.getImgd());
+            list.add(shop.getImge());
+            banner.setImages(list);
+            //banner设置方法全部调用完毕时最后调用
+            banner.start();
+            Glide.with(this)
+                    .load(shop.getEwmMoney())
+                    .placeholder(R.mipmap.iconb)
+                    .into(sk_iv);
+        }
+
     }
 
-    ShopModel.DataBean key;
 
     @Override
     public void initEvents() {
         select_shop_btn.setOnClickListener(v -> {
-            if (key != null) {
-                setResult(11, new Intent().putExtra("model", key));
+            if (shop != null) {
+                setResult(11, new Intent().putExtra("model", shop));
                 finish();
             }
         });
-        HttpUtil.load()
-                .getShopDetail(shop_id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(model -> {
-                    if (("1").equals(model.getState())) {
-                        if (model.getData().size() > 0) {
-                            key = model.getData().get(0);
-                            if (key != null) {
-                                shop_name_tv.setText("商家名字：" + key.getName());
-                                shop_tel_tv.setText("联系电话：" + key.getPhone());
-                                shop_xiangmu_tv.setText("经营项目：" + key.getXiangmu());
-                                shop_address_tv.setText("商家地址：" + key.getAddress());
-
-                                list.add(new ImgModel(key.getZhizhao(), "营业执照"));
-                                list.add(new ImgModel(key.getCard1(), "法人身份证"));
-                                list.add(new ImgModel(key.getCard2(), "法人身份证反面"));
-                                list.add(new ImgModel(key.getEwmMoney(), "收款二维码"));
-                                list.add(new ImgModel(key.getImga(), "展示图"));
-                                list.add(new ImgModel(key.getImgb(), "展示图"));
-                                list.add(new ImgModel(key.getImgc(), "展示图"));
-                                list.add(new ImgModel(key.getImgd(), "展示图"));
-                                list.add(new ImgModel(key.getImge(), "展示图"));
-                            }
-                            adapter.refresh(list);
-                        } else {
-                            ToastShort("当前无数据");
-                            finish();
-                        }
-
-                    } else {
-                        ToastShort("当前无数据");
-                        finish();
-                    }
-                }, error -> {
-                    ToastShort("当前无数据");
-                    finish();
-                });
     }
 }
