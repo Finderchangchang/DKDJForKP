@@ -18,6 +18,5 @@
         android:layout_height="30dp"
         android:layout_toRightOf="@+id/imageItem"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/dp6"
         android:textColor="@color/black" />
 </RelativeLayout>

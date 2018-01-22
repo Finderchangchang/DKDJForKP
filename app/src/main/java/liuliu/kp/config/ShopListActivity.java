@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import net.tsz.afinal.view.TitleBar;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +37,7 @@ public class ShopListActivity extends AppCompatActivity {
     PinnedHeaderListView pinnedListView;
     private boolean isScroll = true;
     private LeftListAdapter adapter;
-
+    TitleBar title_bar;
     private String[] leftStr = new String[]{"面食类", "盖饭", "寿司", "烧烤", "酒水", "凉菜", "小吃", "粥", "休闲"};
     private List<GroupModel.DataBean> left_list = new ArrayList();
     private List<List<GroupModel.DataBean.DataListBean>> right_list = new ArrayList();
@@ -56,11 +58,12 @@ public class ShopListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         pinnedListView = (PinnedHeaderListView) findViewById(R.id.pinnedListView);
         context = this;
-
+        title_bar = (TitleBar) findViewById(R.id.title_bar);
+        title_bar.setLeftClick(() -> finish());
         Map<String, String> map = new HashMap<>();
         String cid = Utils.getCache("cid");//18
         HttpUtil.load()
-                .getShopFenlei(cid)
+                .getShopFenlei("18")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -139,7 +142,6 @@ public class ShopListActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                        //ToastShort("取消成功");
                     } else {
                         finish();
                         Toast.makeText(this, "当前无数据", Toast.LENGTH_SHORT).show();

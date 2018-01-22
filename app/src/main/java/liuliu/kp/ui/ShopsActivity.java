@@ -40,6 +40,7 @@ public class ShopsActivity extends BaseActivity {
         setContentView(R.layout.activity_shops);
         title_bar = (TitleBar) findViewById(R.id.title_bar);
         shop_id = getIntent().getStringExtra("shop_id");
+        title_bar.setLeftClick(() -> finish());
         lv = (ListView) findViewById(R.id.lv);
         mAdapter = new CommonAdapter<ShopModel.DataBean>(this, list, R.layout.item_shop) {
             @Override
@@ -47,6 +48,7 @@ public class ShopsActivity extends BaseActivity {
                 holder.setText(R.id.title_tv, model.getName());
                 holder.setText(R.id.tel_tv, "商家电话：" + model.getPhone());
                 holder.setText(R.id.desc_tv, model.getXiangmu());
+                holder.setImageURL(R.id.shop_img_iv, model.getImga());
             }
         };
         lv.setAdapter(mAdapter);

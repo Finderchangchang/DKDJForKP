@@ -204,6 +204,7 @@ public class CommonViewHolder {
         ImageView view = getView(viewId);
         Glide.with(mContext)
                 .load(url)
+                .transform(new GlideRoundTransform(mContext))
                 .placeholder(R.mipmap.iconb)
                 .into(view);
         return this;

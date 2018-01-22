@@ -8,9 +8,12 @@
 	<TextView 
 	    android:id="@+id/left_list_item"
 	    android:layout_width="match_parent"
-	    android:layout_height="@dimen/dp60"
+	    android:layout_height="@dimen/dp40"
 	    android:padding="@dimen/dp12"
 		android:gravity="center_vertical"
 		android:textColor="@color/black"/>
-    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/list_item_line"/>
 </LinearLayout>

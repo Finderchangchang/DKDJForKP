@@ -47,6 +47,7 @@ public class GGActivity extends AppCompatActivity {
     private int now_time = 3;//当前倒计时的时间
     private TextView djs_tv;
     TextView skip_tv;
+    boolean is_start = true;//true:当前页面存在
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +112,10 @@ public class GGActivity extends AppCompatActivity {
     }
 
     void closeThis() {
-        if (MainActivity.mInstails == null) {
+        if (is_start) {
             Utils.IntentPost(MainActivity.class);
             finish();
+            is_start = false;
         }
     }
 
@@ -164,24 +166,9 @@ public class GGActivity extends AppCompatActivity {
     }
 
     private void setClickListener() {
-        mOne_dot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mIn_vp.setCurrentItem(0);
-            }
-        });
-        mTwo_dot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mIn_vp.setCurrentItem(1);
-            }
-        });
-        mThree_dot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mIn_vp.setCurrentItem(2);
-            }
-        });
+        mOne_dot.setOnClickListener(view -> mIn_vp.setCurrentItem(0));
+        mTwo_dot.setOnClickListener(view -> mIn_vp.setCurrentItem(1));
+        mThree_dot.setOnClickListener(view -> mIn_vp.setCurrentItem(2));
     }
 
 
@@ -190,7 +177,7 @@ public class GGActivity extends AppCompatActivity {
         LayoutInflater lf = getLayoutInflater().from(GGActivity.this);
         View view1 = lf.inflate(R.layout.we_indicator1, null);
         View view2 = lf.inflate(R.layout.we_indicator2, null);
-       // View view3 = lf.inflate(R.layout.we_indicator3, null);
+        // View view3 = lf.inflate(R.layout.we_indicator3, null);
         mViewList.add(view1);
         mViewList.add(view2);
         //mViewList.add(view3);
