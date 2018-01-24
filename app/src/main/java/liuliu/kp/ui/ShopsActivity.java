@@ -95,7 +95,7 @@ public class ShopsActivity extends BaseActivity {
                 poiModel.setDetailAddress(key.getAddress());
                 poiModel.setPoiName(key.getName());
                 intent.putExtra("val", poiModel);
-                setResult(11, intent);
+                setResult(8, intent);
                 finish();//关闭当前页面
             }
         }

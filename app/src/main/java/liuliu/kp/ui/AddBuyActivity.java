@@ -44,6 +44,7 @@ import butterknife.ButterKnife;
 import liuliu.kp.R;
 import liuliu.kp.base.BaseActivity;
 import liuliu.kp.base.BaseApplication;
+import liuliu.kp.config.CustomGridView;
 import liuliu.kp.config.Key;
 import liuliu.kp.config.ShopListActivity;
 import liuliu.kp.config.Util;
@@ -52,6 +53,7 @@ import liuliu.kp.listener.HBListener;
 import liuliu.kp.listener.SuanLuListener;
 import liuliu.kp.method.CommonAdapter;
 import liuliu.kp.method.CommonViewHolder;
+import liuliu.kp.method.HttpUtil;
 import liuliu.kp.method.Utils;
 import liuliu.kp.method.WxUtil;
 import liuliu.kp.model.FeiModel;
@@ -65,6 +67,8 @@ import liuliu.kp.view.IAddressManage;
 import liuliu.kp.view.IHB;
 import liuliu.kp.wxapi.PayResult;
 import liuliu.kp.wxapi.SignUtils;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static liuliu.kp.R.id.price_detail_ll;
 import static liuliu.kp.method.Utils.URLEncodeImage;
@@ -80,7 +84,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     @Bind(R.id.title_bar)
     TitleBar titleBar;
     @Bind(R.id.buy_type_gv)
-    GridView buyTypeGv;
+    CustomGridView buyTypeGv;
     @Bind(R.id.but_what_et)
     EditText butWhatEt;
     @Bind(R.id.jiujin_buy_rb)
@@ -133,6 +137,26 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     AddressManageListener addressManageListener;
     WxUtil wxUtil = new WxUtil();
 
+    void load() {
+        HttpUtil.load()
+                .getShopFenlei("18")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    if (("1").equals(model.getState())) {
+                        list = new ArrayList<>();
+                        for (int i = 0; i < model.getData().size(); i++) {
+                            if (i == 0) {
+                                list.add(new TagModel(model.getData().get(i).getClassname(), model.getData().get(i).getId(), "", true));
+                            } else {
+                                list.add(new TagModel(model.getData().get(i).getClassname(), model.getData().get(i).getId(), "", false));
+                            }
+                        }
+                        modelCommonAdapter.refresh(list);
+                    }
+                });
+    }
+
     @Override
     public void initViews() {
         setContentView(R.layout.activity_add_buy);
@@ -157,25 +181,28 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
             @Override
             public void convert(CommonViewHolder holder, TagModel tagModel, int position) {
                 holder.setBGText(R.id.poi_field_id, tagModel.getTag());
-                if (tagModel.isClick()) {
-                    holder.setBG(R.id.poi_field_id, R.mipmap.tag_click);
-                    holder.setTextColor(R.id.poi_field_id, R.color.colorchongzhizi);
-                } else {
+//                if (tagModel.isClick()) {
+//                    holder.setBG(R.id.poi_field_id, R.mipmap.tag_click);
+//                    holder.setTextColor(R.id.poi_field_id, R.color.colorchongzhizi);
+//                } else {
                     holder.setBG(R.id.poi_field_id, R.drawable.tab_btn_bg);
                     holder.setTextColor(R.id.poi_field_id, R.color.colorsettingzi);
-                }
+//                }
                 holder.setOnClickListener(R.id.poi_field_id, v -> {
-                    butWhatEt.setHint(tagModel.getVal());
-                    tag_key_tv.setText(tagModel.getTag());
-                    TagModel tag = list.get(clickItem);
-                    tag.setClick(false);
-                    list.add(clickItem, tag);
-                    list.remove(clickItem);
-                    clickItem = position;
-                    tagModel.setClick(true);
-                    list.add(position, tagModel);
-                    list.remove(position);
-                    modelCommonAdapter.notifyDataSetChanged();
+//                    butWhatEt.setHint(tagModel.getVal());
+//                    tag_key_tv.setText(tagModel.getTag());
+//                    TagModel tag = list.get(clickItem);
+//                    tag.setClick(false);
+//                    list.add(clickItem, tag);
+//                    list.remove(clickItem);
+//                    clickItem = position;
+//                    tagModel.setClick(true);
+//                    list.add(position, tagModel);
+//                    list.remove(position);
+//                    modelCommonAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent(AddBuyActivity.this, ShopsActivity.class);
+                    intent.putExtra("shop_id", tagModel.getId());
+                    startActivityForResult(intent, 0);
                 });
             }
         };
@@ -365,7 +392,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         }
 
         public void run() {
-            wxUtil.load(AddBuyActivity.this, BaseApplication.getContext().getResources().getString(R.string.app_name), BaseApplication.getContext().getResources().getString(R.string.app_name)+"支付", Order_Id, Order_Price);
+            wxUtil.load(AddBuyActivity.this, BaseApplication.getContext().getResources().getString(R.string.app_name), BaseApplication.getContext().getResources().getString(R.string.app_name) + "支付", Order_Id, Order_Price);
         }
     }
 
@@ -447,17 +474,17 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
 
     int clickItem = 0;
 
-    private void load() {
-        list = new ArrayList<>();
-        list.add(new TagModel("随意购", "想买什么，就买什么！请填写商品名称和数量", true));
-        list.add(new TagModel("咖啡", "请填写咖啡品类、口味、杯型等具体要求", false));
-        list.add(new TagModel("香烟", "请填写香烟名称型号，包装要求等", false));
-        list.add(new TagModel("酒", "请填写酒类名称、度数等要求", false));
-        list.add(new TagModel("早餐", "请填写餐品名称、份数、是否忌口等要求", false));
-        list.add(new TagModel("宵夜", "请填写餐品名称、份数、是否忌口等要求", false));
-        list.add(new TagModel("药品", "请填写药品名称、厂家等要求", false));
-        list.add(new TagModel("生鲜", "请填写生鲜种类、重量、体积等要求", false));
-    }
+//    private void load() {
+//        list = new ArrayList<>();
+//        list.add(new TagModel("随意购", "想买什么，就买什么！请填写商品名称和数量", true));
+//        list.add(new TagModel("咖啡", "请填写咖啡品类、口味、杯型等具体要求", false));
+//        list.add(new TagModel("香烟", "请填写香烟名称型号，包装要求等", false));
+//        list.add(new TagModel("酒", "请填写酒类名称、度数等要求", false));
+//        list.add(new TagModel("早餐", "请填写餐品名称、份数、是否忌口等要求", false));
+//        list.add(new TagModel("宵夜", "请填写餐品名称、份数、是否忌口等要求", false));
+//        list.add(new TagModel("药品", "请填写药品名称、厂家等要求", false));
+//        list.add(new TagModel("生鲜", "请填写生鲜种类、重量、体积等要求", false));
+//    }
 
     @Override
     public void initEvents() {
@@ -675,7 +702,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         if (orderId != null) {
             if (!pay_is_wx) {
                 String orderInfo = getOrderInfo(BaseApplication.getContext().getResources().getString(R.string.app_name),
-                        BaseApplication.getContext().getResources().getString(R.string.app_name)+"支付", price1 + "", orderId);
+                        BaseApplication.getContext().getResources().getString(R.string.app_name) + "支付", price1 + "", orderId);
                 String sign = sign(orderInfo);
                 try {
                     sign = URLEncoder.encode(sign, "UTF-8");

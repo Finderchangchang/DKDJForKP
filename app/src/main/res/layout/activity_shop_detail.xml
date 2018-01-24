@@ -122,6 +122,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:text="选择此商家"
+        android:text="召唤附近骑兵"
         android:textColor="@color/white" />
 </LinearLayout>

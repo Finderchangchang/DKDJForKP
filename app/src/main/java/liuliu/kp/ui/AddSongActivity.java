@@ -35,17 +35,23 @@ import net.tsz.afinal.view.TitleBar;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import liuliu.kp.R;
 import liuliu.kp.base.BaseActivity;
 import liuliu.kp.base.BaseApplication;
+import liuliu.kp.config.CustomGridView;
 import liuliu.kp.config.Key;
 import liuliu.kp.config.ShopListActivity;
 import liuliu.kp.listener.AddressManageListener;
 import liuliu.kp.listener.HBListener;
 import liuliu.kp.listener.SuanLuListener;
+import liuliu.kp.method.CommonAdapter;
+import liuliu.kp.method.CommonViewHolder;
+import liuliu.kp.method.HttpUtil;
 import liuliu.kp.method.Utils;
 import liuliu.kp.method.WxUtil;
 import liuliu.kp.model.FeiModel;
@@ -53,11 +59,14 @@ import liuliu.kp.model.HBModel;
 import liuliu.kp.model.HBsModel;
 import liuliu.kp.model.PoiModel;
 import liuliu.kp.model.SaveOrderModel;
+import liuliu.kp.model.TagModel;
 import liuliu.kp.view.IAddBuy;
 import liuliu.kp.view.IAddressManage;
 import liuliu.kp.view.IHB;
 import liuliu.kp.wxapi.PayResult;
 import liuliu.kp.wxapi.SignUtils;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static liuliu.kp.method.Utils.URLEncodeImage;
 
@@ -127,8 +136,34 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
     private boolean isSong = true;
     private boolean pay_is_wx = true;
     boolean isTel1 = true;
+    CommonAdapter<TagModel> modelCommonAdapter;
+    List<TagModel> list = new ArrayList<>();
+
     AddressManageListener addressManageListener;
     WxUtil wxUtil = new WxUtil();
+    @Bind(R.id.buy_type_gv)
+    CustomGridView buyTypeGv;
+
+    void load() {
+        HttpUtil.load()
+                .getShopFenlei("18")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    if (("1").equals(model.getState())) {
+                        list = new ArrayList<>();
+                        for (int i = 0; i < model.getData().size(); i++) {
+                            if (i == 0) {
+                                list.add(new TagModel(model.getData().get(i).getClassname(), model.getData().get(i).getId(), "", true));
+                            } else {
+                                list.add(new TagModel(model.getData().get(i).getClassname(), model.getData().get(i).getId(), "", false));
+                            }
+                        }
+                        modelCommonAdapter.refresh(list);
+                    }
+                });
+    }
+
 
     @Override
     public void initViews() {
@@ -150,6 +185,35 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                 }
             }
         });
+        modelCommonAdapter = new CommonAdapter<TagModel>(this, list, R.layout.item_btn) {
+            @Override
+            public void convert(CommonViewHolder holder, TagModel tagModel, int position) {
+                holder.setBGText(R.id.poi_field_id, tagModel.getTag());
+//                if (tagModel.isClick()) {
+//                    holder.setBG(R.id.poi_field_id, R.mipmap.tag_click);
+//                    holder.setTextColor(R.id.poi_field_id, R.color.colorchongzhizi);
+//                } else {
+                    holder.setBG(R.id.poi_field_id, R.drawable.tab_btn_bg);
+                    holder.setTextColor(R.id.poi_field_id, R.color.colorsettingzi);
+//                }
+                holder.setOnClickListener(R.id.poi_field_id, v -> {
+//                    butWhatEt.setHint(tagModel.getVal());
+//                    tag_key_tv.setText(tagModel.getTag());
+//                    TagModel tag = list.get(clickItem);
+//                    tag.setClick(false);
+//                    list.add(clickItem, tag);
+//                    list.remove(clickItem);
+//                    clickItem = position;
+//                    tagModel.setClick(true);
+//                    list.add(position, tagModel);
+//                    list.remove(position);
+//                    modelCommonAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent(AddSongActivity.this, ShopsActivity.class);
+                    intent.putExtra("shop_id", tagModel.getId());
+                    startActivityForResult(intent, 0);
+                });
+            }
+        };
         scSendAddressIv.setOnClickListener(v -> {//收藏收货地址
             if (!firstIsbuy) {
                 if (buy_poi != null) {
@@ -175,6 +239,9 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                 startActivityForResult(intent, 0);
             }
         });
+        buyTypeGv.setAdapter(modelCommonAdapter);
+        modelCommonAdapter.notifyDataSetChanged();
+        load();
         title_bar.setRightClick(() -> Utils.IntentPost(WebActivity.class, intent -> intent.putExtra("web", "计价标准")));
         if (isSong) {
             title_bar.setCenter_str("送东西");

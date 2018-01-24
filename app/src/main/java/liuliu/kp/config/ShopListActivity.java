@@ -69,79 +69,79 @@ public class ShopListActivity extends AppCompatActivity {
                 .subscribe(model -> {
                     if (("1").equals(model.getState())) {
                         left_list = model.getData();
-                        for (int i = 0; i < left_list.size(); i++) {
-                            right_list.add(left_list.get(i).getDataList());
-                        }
+//                        for (int i = 0; i < left_list.size(); i++) {
+//                            right_list.add(left_list.get(i).getDataList());
+//                        }
                         adapter = new LeftListAdapter(this, left_list, flagArray);
                         leftListview.setAdapter(adapter);
-                        sectionedAdapter = new MainSectionedAdapter(this, left_list, right_list);
-                        sectionedAdapter.setClick((section, position) -> {
-                            now_section = section;
-                            now_position = position;
-                            Intent intent = new Intent(this, ShopsActivity.class);
-                            intent.putExtra("shop_id", right_list.get(section).get(position).getId());
-                            startActivityForResult(intent, 12);
-//                            Intent intent = new Intent(this, ShopDetailActivity.class);
+//                        sectionedAdapter = new MainSectionedAdapter(this, left_list, right_list);
+//                        sectionedAdapter.setClick((section, position) -> {
+//                            now_section = section;
+//                            now_position = position;
+//                            Intent intent = new Intent(this, ShopsActivity.class);
 //                            intent.putExtra("shop_id", right_list.get(section).get(position).getId());
 //                            startActivityForResult(intent, 12);
-                        });
-                        pinnedListView.setAdapter(sectionedAdapter);
+////                            Intent intent = new Intent(this, ShopDetailActivity.class);
+////                            intent.putExtra("shop_id", right_list.get(section).get(position).getId());
+////                            startActivityForResult(intent, 12);
+//                        });
+//                        pinnedListView.setAdapter(sectionedAdapter);
 
-                        pinnedListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-                            @Override
-                            public void onScrollStateChanged(AbsListView arg0, int scrollState) {
-                                switch (scrollState) {
-                                    // 当不滚动时
-                                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
-                                        // 判断滚动到底部
-                                        if (pinnedListView.getLastVisiblePosition() == (pinnedListView.getCount() - 1)) {
-                                            leftListview.setSelection(ListView.FOCUS_DOWN);
-                                        }
-
-                                        // 判断滚动到顶部
-                                        if (pinnedListView.getFirstVisiblePosition() == 0) {
-                                            leftListview.setSelection(0);
-                                        }
-
-                                        break;
-                                }
-                            }
-
-                            int y = 0;
-                            int x = 0;
-                            int z = 0;
-
-                            @Override
-                            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                                if (isScroll) {
-                                    for (int i = 0; i < rightStr.length; i++) {
-                                        if (i == sectionedAdapter.getSectionForPosition(pinnedListView.getFirstVisiblePosition())) {
-                                            flagArray[i] = true;
-                                            x = i;
-                                        } else {
-                                            flagArray[i] = false;
-                                        }
-                                    }
-                                    if (x != y) {
-                                        adapter.notifyDataSetChanged();
-                                        y = x;
-                                        if (y == leftListview.getLastVisiblePosition()) {
-//                            z = z + 3;
-                                            leftListview.setSelection(z);
-                                        }
-                                        if (x == leftListview.getFirstVisiblePosition()) {
-//                            z = z - 1;
-                                            leftListview.setSelection(z);
-                                        }
-                                        if (firstVisibleItem + visibleItemCount == totalItemCount - 1) {
-                                            leftListview.setSelection(ListView.FOCUS_DOWN);
-                                        }
-                                    }
-                                } else {
-                                    isScroll = true;
-                                }
-                            }
-                        });
+//                        pinnedListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//                            @Override
+//                            public void onScrollStateChanged(AbsListView arg0, int scrollState) {
+//                                switch (scrollState) {
+//                                    // 当不滚动时
+//                                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+//                                        // 判断滚动到底部
+//                                        if (pinnedListView.getLastVisiblePosition() == (pinnedListView.getCount() - 1)) {
+//                                            leftListview.setSelection(ListView.FOCUS_DOWN);
+//                                        }
+//
+//                                        // 判断滚动到顶部
+//                                        if (pinnedListView.getFirstVisiblePosition() == 0) {
+//                                            leftListview.setSelection(0);
+//                                        }
+//
+//                                        break;
+//                                }
+//                            }
+//
+//                            int y = 0;
+//                            int x = 0;
+//                            int z = 0;
+//
+//                            @Override
+//                            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                                if (isScroll) {
+//                                    for (int i = 0; i < rightStr.length; i++) {
+//                                        if (i == sectionedAdapter.getSectionForPosition(pinnedListView.getFirstVisiblePosition())) {
+//                                            flagArray[i] = true;
+//                                            x = i;
+//                                        } else {
+//                                            flagArray[i] = false;
+//                                        }
+//                                    }
+//                                    if (x != y) {
+//                                        adapter.notifyDataSetChanged();
+//                                        y = x;
+//                                        if (y == leftListview.getLastVisiblePosition()) {
+////                            z = z + 3;
+//                                            leftListview.setSelection(z);
+//                                        }
+//                                        if (x == leftListview.getFirstVisiblePosition()) {
+////                            z = z - 1;
+//                                            leftListview.setSelection(z);
+//                                        }
+//                                        if (firstVisibleItem + visibleItemCount == totalItemCount - 1) {
+//                                            leftListview.setSelection(ListView.FOCUS_DOWN);
+//                                        }
+//                                    }
+//                                } else {
+//                                    isScroll = true;
+//                                }
+//                            }
+//                        });
                     } else {
                         finish();
                         Toast.makeText(this, "当前无数据", Toast.LENGTH_SHORT).show();
