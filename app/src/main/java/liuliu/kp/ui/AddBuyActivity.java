@@ -138,8 +138,9 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     WxUtil wxUtil = new WxUtil();
 
     void load() {
+
         HttpUtil.load()
-                .getShopFenlei("18")
+                .getShopFenlei(Utils.getCache("cid"))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -172,7 +173,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         addressManageListener = new AddressManageListener(this);
         inflate = LayoutInflater.from(this).inflate(R.layout.dialog_pay, null);
         send_poi = (PoiModel) getIntent().getSerializableExtra("model");
-        load();
+
         bottom_dialog = new Dialog(this, R.style.ActionSheetDialogStyle);
         dialog = Utils.ProgressDialog(this, "算路中，请稍后...", true);
         mListener = new SuanLuListener(this);
@@ -185,8 +186,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
 //                    holder.setBG(R.id.poi_field_id, R.mipmap.tag_click);
 //                    holder.setTextColor(R.id.poi_field_id, R.color.colorchongzhizi);
 //                } else {
-                    holder.setBG(R.id.poi_field_id, R.drawable.tab_btn_bg);
-                    holder.setTextColor(R.id.poi_field_id, R.color.colorsettingzi);
+                holder.setBG(R.id.poi_field_id, R.drawable.tab_btn_bg);
+                holder.setTextColor(R.id.poi_field_id, R.color.colorsettingzi);
 //                }
                 holder.setOnClickListener(R.id.poi_field_id, v -> {
 //                    butWhatEt.setHint(tagModel.getVal());
@@ -239,6 +240,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         titleBar.setLeftClick(() -> finish());
         buyTypeGv.setAdapter(modelCommonAdapter);
         modelCommonAdapter.notifyDataSetChanged();
+        load();
         payTv.setOnClickListener(v -> {
             if (("").equals(butWhatEt.getText().toString().trim())) {
                 ToastShort("请填写需要购买的物品信息");

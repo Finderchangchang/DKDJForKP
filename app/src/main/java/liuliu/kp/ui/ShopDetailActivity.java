@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -66,10 +67,18 @@ public class ShopDetailActivity extends BaseActivity {
             shop_xiangmu_tv.setText("商家地址：" + shop.getAddress());
             shop_address_tv.setText("经营项目：" + shop.getXiangmu());
             list.add(shop.getImga());
-            list.add(shop.getImgb());
-            list.add(shop.getImgc());
-            list.add(shop.getImgd());
-            list.add(shop.getImge());
+            if(!TextUtils.isEmpty(shop.getImgb())){
+                list.add(shop.getImgb());
+            }
+            if(!TextUtils.isEmpty(shop.getImgc())){
+                list.add(shop.getImgc());
+            }
+            if(!TextUtils.isEmpty(shop.getImgd())){
+                list.add(shop.getImgd());
+            }
+            if(!TextUtils.isEmpty(shop.getImge())){
+                list.add(shop.getImge());
+            }
             banner.setImages(list);
             //banner设置方法全部调用完毕时最后调用
             banner.start();

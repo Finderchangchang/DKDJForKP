@@ -146,7 +146,7 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
 
     void load() {
         HttpUtil.load()
-                .getShopFenlei("18")
+                .getShopFenlei(Utils.getCache("cid"))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -193,8 +193,8 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
 //                    holder.setBG(R.id.poi_field_id, R.mipmap.tag_click);
 //                    holder.setTextColor(R.id.poi_field_id, R.color.colorchongzhizi);
 //                } else {
-                    holder.setBG(R.id.poi_field_id, R.drawable.tab_btn_bg);
-                    holder.setTextColor(R.id.poi_field_id, R.color.colorsettingzi);
+                holder.setBG(R.id.poi_field_id, R.drawable.tab_btn_bg);
+                holder.setTextColor(R.id.poi_field_id, R.color.colorsettingzi);
 //                }
                 holder.setOnClickListener(R.id.poi_field_id, v -> {
 //                    butWhatEt.setHint(tagModel.getVal());
