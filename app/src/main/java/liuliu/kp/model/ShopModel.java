@@ -8,7 +8,7 @@ import java.util.List;
  * QQ群481606175
  */
 
-public class ShopModel  implements Serializable{
+public class ShopModel implements Serializable {
 
     /**
      * state : 1
@@ -44,7 +44,7 @@ public class ShopModel  implements Serializable{
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * id : 1
          * classname : 苹果
@@ -86,6 +86,15 @@ public class ShopModel  implements Serializable{
         private String imgd;
         private String imge;
         private String cityId;
+        private String juli;
+
+        public String getJuli() {
+            return juli;
+        }
+
+        public void setJuli(String juli) {
+            this.juli = juli;
+        }
 
         public String getId() {
             return id;

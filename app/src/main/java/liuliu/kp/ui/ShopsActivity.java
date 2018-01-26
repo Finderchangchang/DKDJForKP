@@ -10,7 +10,9 @@ import android.widget.ListView;
 import net.tsz.afinal.view.TitleBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import liuliu.kp.R;
 import liuliu.kp.base.BaseActivity;
@@ -18,6 +20,7 @@ import liuliu.kp.base.BaseApplication;
 import liuliu.kp.method.CommonAdapter;
 import liuliu.kp.method.CommonViewHolder;
 import liuliu.kp.method.HttpUtil;
+import liuliu.kp.method.Utils;
 import liuliu.kp.model.ImgModel;
 import liuliu.kp.model.OrderModel;
 import liuliu.kp.model.PoiModel;
@@ -49,6 +52,8 @@ public class ShopsActivity extends BaseActivity {
                 holder.setText(R.id.tel_tv, "商家电话：" + model.getPhone());
                 holder.setText(R.id.desc_tv, model.getXiangmu());
                 holder.setImageURL(R.id.shop_img_iv, model.getImga());
+                holder.setText(R.id.juli_tv, model.getJuli() + "KM");
+
             }
         };
         lv.setAdapter(mAdapter);
@@ -57,8 +62,13 @@ public class ShopsActivity extends BaseActivity {
             intent.putExtra("model", list.get(position));
             startActivityForResult(intent, 12);
         });
+        Map<String, String> map = new HashMap<>();
+        map.put("fenleiid", shop_id);
+        map.put("lat", Utils.getCache("now_lat"));
+        map.put("lng", Utils.getCache("now_lng"));
+
         HttpUtil.load()
-                .getShopDetail(shop_id)
+                .getShopDetail(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {

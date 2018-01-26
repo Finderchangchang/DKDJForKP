@@ -40,4 +40,10 @@
             android:layout_weight="1"
             android:text="电话" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/juli_tv"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:gravity="center" />
 </LinearLayout>
