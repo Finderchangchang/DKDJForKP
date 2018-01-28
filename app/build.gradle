@@ -6,7 +6,7 @@ android {
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
     defaultConfig {
-        applicationId "liuliu.yjf"
+        applicationId "liuliu.yjf.hei"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 2

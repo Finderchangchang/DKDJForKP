@@ -83,7 +83,7 @@
         <!-- 6863fffa97d83c1b904a0784425f6925 正式地址 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="6863fffa97d83c1b904a0784425f6925" />
+            android:value="66f82d42a17a9f10a11db31987254818" />
 
         <service android:name="com.amap.api.location.APSService" />
 
