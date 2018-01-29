@@ -273,7 +273,7 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
                             city_name_tv.setText(result.getRegeocodeAddress().getCity());
                             List<CityModel> list = db.findAllByWhere(CityModel.class, "cname='" + result.getRegeocodeAddress().getCity() + "'");
                             if (list.size() > 0) {
-                                Utils.putCache("cname",result.getRegeocodeAddress().getCity());
+                                Utils.putCache("cname", result.getRegeocodeAddress().getCity());
                                 Utils.putCache("cid", list.get(0).getCid());
                                 mListener.loadQSLatLngs(list.get(0).getCid());
                             } else {
@@ -336,11 +336,14 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
             mUiSettings.setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_RIGHT);
             aMap.setMyLocationEnabled(true);// 可触发定位并显示定位层
         }
+
         mlocationClient.setLocationListener(aMapLocation -> {
             sendAddressTv.setText(aMapLocation.getPoiName());
             mapLocation = aMapLocation;
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), 16));
             city_name_tv.setText(aMapLocation.getCity());
+            Utils.putCache("now_lat", aMapLocation.getLatitude() + "");//获取纬度
+            Utils.putCache("now_lng", aMapLocation.getLongitude() + "");//获取纬度
             List<CityModel> list = db.findAllByWhere(CityModel.class, "cname='" + aMapLocation.getCity() + "'");
             if (list.size() > 0) {
                 Utils.putCache("cid", list.get(0).getCid());

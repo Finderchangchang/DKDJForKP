@@ -85,7 +85,7 @@ public interface GitHubAPI {
 
     //获得城市列表
     @GET("App/Cpaotui/getShopFenleiShop.aspx")
-    Observable<ShopModel> getShopDetail(@Query("fenleiid") String cityid);
+    Observable<ShopModel> getShopDetail(@QueryMap Map<String, String> map);
 
     @GET("download/version.aspx?c=4")
     Observable<VersionModel> checkUpdate();
