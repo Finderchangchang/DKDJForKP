@@ -16,7 +16,7 @@ public class HttpUtil {
 //public static final String BASE_URL = "http://www.dakedaojia.com/";
     //
 //    public static final String BASE_URL = "http://kuaipao.myejq.com/";
-    public static final String BASE_URL = "www.gjqb110.com";
+    public static final String BASE_URL = "http://www.gjqb110.com/";
 
     private static final int DEFAULT_TIMEOUT = 5;
 
