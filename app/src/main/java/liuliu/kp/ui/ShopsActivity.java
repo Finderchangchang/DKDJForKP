@@ -52,7 +52,7 @@ public class ShopsActivity extends BaseActivity {
                 holder.setText(R.id.tel_tv, "商家电话：" + model.getPhone());
                 holder.setText(R.id.desc_tv, model.getXiangmu());
                 holder.setImageURL(R.id.shop_img_iv, model.getImga());
-                holder.setText(R.id.juli_tv, model.getJuli() + "KM");
+                holder.setText(R.id.juli_tv, model.getJuli() + "");
 
             }
         };

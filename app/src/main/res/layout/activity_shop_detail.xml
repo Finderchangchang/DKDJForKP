@@ -109,6 +109,12 @@
             android:layout_height="100dp" />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="点击二维码，将收款二维码保存到本地，使用微信/支付宝扫一扫，选择上一步保存好的二维码图片即可。" />
+
     <GridView
         android:id="@+id/img_gv"
         android:layout_width="match_parent"

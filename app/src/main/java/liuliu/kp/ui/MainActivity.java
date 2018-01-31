@@ -275,6 +275,8 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
                             if (list.size() > 0) {
                                 Utils.putCache("cname", result.getRegeocodeAddress().getCity());
                                 Utils.putCache("cid", list.get(0).getCid());
+                                Utils.putCache("now_lat", list.get(0).getLat() + "");//获取纬度
+                                Utils.putCache("now_lng", point_latlng.getLongitude() + "");//获取纬度
                                 mListener.loadQSLatLngs(list.get(0).getCid());
                             } else {
                                 Utils.putCache("cid", "");
@@ -311,6 +313,8 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
                                         }
                                         send_address_ll.setVisibility(View.VISIBLE);
                                         no_address_tv.setVisibility(View.GONE);
+                                        Utils.putCache("now_lat", point_latlng.getLatitude() + "");//获取纬度
+                                        Utils.putCache("now_lng", point_latlng.getLongitude() + "");//获取纬度
                                         model = new PoiModel(point_title, point_address, "0", point_latlng.getLatitude(), point_latlng.getLongitude());
                                     } else {
                                         no_address_tv.setText("没有位置信息，请尝试其他结果");

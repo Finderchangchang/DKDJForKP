@@ -31,7 +31,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.StartActivity"></activity>
+        <activity android:name=".ui.StartActivity" />
         <activity android:name=".ui.OrderDetailsActivity" />
         <activity android:name=".ui.CityActivity" />
         <activity android:name=".ui.SearchPoiActivity" />
@@ -119,7 +119,8 @@
                 <data android:scheme="wx91664201904be69e" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ShopsActivity"></activity>
+        <activity android:name=".ui.ShopsActivity" />
+        <activity android:name=".ui.BigImgActivity"></activity>
     </application>
 
 </manifest>

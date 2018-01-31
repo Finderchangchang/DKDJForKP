@@ -42,6 +42,8 @@ public class ShopDetailActivity extends BaseActivity {
     ImageView sk_iv;
     Banner banner;
     LinearLayout tel_ll;
+    String url;
+    String shop_id;
 
     @Override
     public void initViews() {
@@ -63,20 +65,21 @@ public class ShopDetailActivity extends BaseActivity {
         });
         shop = (ShopModel.DataBean) getIntent().getSerializableExtra("model");
         if (shop != null) {
+            shop_id = shop.getId();
             title_bar.setCenter_str(shop.getName());
             shop_xiangmu_tv.setText("商家地址：" + shop.getAddress());
             shop_address_tv.setText("经营项目：" + shop.getXiangmu());
             list.add(shop.getImga());
-            if(!TextUtils.isEmpty(shop.getImgb())){
+            if (!TextUtils.isEmpty(shop.getImgb())) {
                 list.add(shop.getImgb());
             }
-            if(!TextUtils.isEmpty(shop.getImgc())){
+            if (!TextUtils.isEmpty(shop.getImgc())) {
                 list.add(shop.getImgc());
             }
-            if(!TextUtils.isEmpty(shop.getImgd())){
+            if (!TextUtils.isEmpty(shop.getImgd())) {
                 list.add(shop.getImgd());
             }
-            if(!TextUtils.isEmpty(shop.getImge())){
+            if (!TextUtils.isEmpty(shop.getImge())) {
                 list.add(shop.getImge());
             }
             banner.setImages(list);
@@ -86,8 +89,14 @@ public class ShopDetailActivity extends BaseActivity {
                     .load(shop.getEwmMoney())
                     .placeholder(R.mipmap.iconb)
                     .into(sk_iv);
+            url = shop.getEwmMoney();
         }
-
+        sk_iv.setOnClickListener(v -> {
+            Intent intent = new Intent(this, BigImgActivity.class);
+            intent.putExtra("url", url);
+            intent.putExtra("shop_id", shop_id);
+            startActivity(intent);
+        });
     }
 
 
