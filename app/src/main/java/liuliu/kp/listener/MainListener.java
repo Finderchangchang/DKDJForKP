@@ -72,6 +72,15 @@ public class MainListener implements IMainMView {
                 }, error -> {
                     String s = "";
                 });
+        HttpUtil.load()
+                .checkUpdate()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    mView.checkUpdate(model);
+                }, error -> {
+                    mView.checkUpdate(null);
+                });
     }
 }
 
