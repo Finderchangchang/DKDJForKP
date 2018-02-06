@@ -9,10 +9,9 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#F8F8F9"
+        android:background="#016bb7"
         app:center_tv="取东西"
-        app:left_iv="@mipmap/ic_launcher"
-        app:right_iv="@mipmap/ic_launcher" />
+        app:right_iv="@mipmap/price_xz" />
 
     <LinearLayout
         android:id="@+id/ll_qu1"
@@ -403,7 +402,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorbai"
+        android:background="@color/red"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -411,7 +410,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/mai_tan" />
+            android:src="@mipmap/price_xz" />
 
         <TextView
             android:layout_width="0dp"
@@ -424,9 +423,9 @@
         <TextView
             android:layout_width="80dp"
             android:layout_height="40dp"
-            android:background="@color/colorxing"
+            android:background="@color/colorbai"
             android:gravity="center"
             android:text="去支付"
-            android:textColor="@color/colorbai" />
+            android:textColor="@color/colorxing" />
     </LinearLayout>
 </RelativeLayout>

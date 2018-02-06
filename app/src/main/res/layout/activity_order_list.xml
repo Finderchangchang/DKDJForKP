@@ -9,7 +9,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#F8F8F9"
+        android:background="#016bb7"
         app:center_tv="订单管理" />
 
     <android.support.design.widget.TabLayout

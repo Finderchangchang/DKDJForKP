@@ -10,6 +10,8 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#016bb7"
+
         app:center_tv="我的地址" />
 
     <LinearLayout

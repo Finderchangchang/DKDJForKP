@@ -9,7 +9,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#F8F8F9"
+        android:background="#016bb7"
         app:center_tv="送东西"
         app:right_iv="@mipmap/price_xz" />
 
@@ -449,7 +449,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorbai"
+        android:background="@color/red"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -466,7 +466,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
-                android:src="@mipmap/mai_tan" />
+                android:src="@mipmap/price_xz" />
 
             <TextView
                 android:id="@+id/price_tv"
@@ -488,9 +488,9 @@
             android:id="@+id/pay_btn"
             android:layout_width="80dp"
             android:layout_height="40dp"
-            android:background="@color/colorxing"
+            android:background="@color/colorbai"
             android:gravity="center"
             android:text="去支付"
-            android:textColor="@color/colorbai" />
+            android:textColor="@color/colorxing" />
     </LinearLayout>
 </RelativeLayout>

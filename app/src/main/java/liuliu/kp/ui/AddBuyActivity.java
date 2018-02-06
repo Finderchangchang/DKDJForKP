@@ -155,6 +155,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                         }
                         modelCommonAdapter.refresh(list);
                     }
+                }, error -> {
+                    String a="";
                 });
     }
 

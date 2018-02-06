@@ -161,6 +161,8 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                         }
                         modelCommonAdapter.refresh(list);
                     }
+                }, error -> {
+                    String a="";
                 });
     }
 
