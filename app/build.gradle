@@ -9,8 +9,8 @@ android {
         applicationId "liuliu.yjf.hei"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 3
-        versionName "0.5.6"
+        versionCode 4
+        versionName "0.5.7"
         manifestPlaceholders = [
                 GETUI_APP_ID    : "azTwDC1iBi8awzXR1cJZ42",
                 GETUI_APP_KEY   : "gOcGVUXdhv8RoVYUHgtbw4",
