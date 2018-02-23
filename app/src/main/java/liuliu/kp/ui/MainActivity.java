@@ -348,6 +348,7 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
             city_name_tv.setText(aMapLocation.getCity());
             Utils.putCache("now_lat", aMapLocation.getLatitude() + "");//获取纬度
             Utils.putCache("now_lng", aMapLocation.getLongitude() + "");//获取纬度
+            Toast.makeText(this, aMapLocation.getCity(), Toast.LENGTH_SHORT).show();
             List<CityModel> list = db.findAllByWhere(CityModel.class, "cname='" + aMapLocation.getCity() + "'");
             if (list.size() > 0) {
                 Utils.putCache("cid", list.get(0).getCid());
@@ -356,6 +357,9 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
                 mListener.loadQSLatLngs("0");
                 Utils.putCache("cid", "");
             }
+            send_address_ll.setVisibility(View.VISIBLE);
+            no_address_tv.setVisibility(View.GONE);
+            dialog.dismiss();
         });
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         mLocationOption.setOnceLocation(true);
