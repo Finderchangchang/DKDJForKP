@@ -94,7 +94,7 @@ public class LoginActivity extends BaseActivity implements ILogin, IRequestCode 
             }
         });
         loginBtn.setOnClickListener(v -> {
-            if (isCode) {
+            if (!isCode) {
                 if (true) {
                     mListener.reqCode(telEt.getText().toString().trim());
                     loginBtn.setEnabled(false);

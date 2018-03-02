@@ -192,12 +192,7 @@ public class ForgetPwd_CheckCodeActivity extends BaseActivity implements TextWat
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(model -> {
                             if (("1").equals(model.getSuccess())) {
-                                Utils.IntentPost(MainActivity.class, new Utils.putListener() {
-                                    @Override
-                                    public void put(Intent intent) {
-                                        intent.putExtra("can_run", true);
-                                    }
-                                });
+                                Utils.IntentPost(MainActivity.class, intent -> intent.putExtra("can_run", true));
                                 if (MainActivity.mInstails != null) {
                                     MainActivity.mInstails.finish();
                                 }
