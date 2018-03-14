@@ -54,7 +54,8 @@ public class SuanLuListener implements ISuanLuMView {
         Map<String, String> map = new HashMap<>();
         map.put("ordertype", model.getOrdertype());
         map.put("userid", model.getUserid());
-        map.put("remark", model.getRemark());
+        if (!TextUtils.isEmpty(model.getRemark()))
+            map.put("remark", model.getRemark());
         map.put("cityid", Utils.getCache("cid"));
         if (model.getNearbuy() != null) {
             map.put("nearbuy", model.getNearbuy());

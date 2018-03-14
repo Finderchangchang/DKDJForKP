@@ -1,4 +1,4 @@
-package liuliu.kp.wxapi;
+package liuliu.yjf.hei.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,6 @@ import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import liuliu.kp.R;
-import liuliu.kp.config.Key;
 import liuliu.kp.method.Utils;
 import liuliu.kp.ui.AddBuyActivity;
 import liuliu.kp.ui.AddSongActivity;
@@ -51,6 +50,9 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     Toast.makeText(WXPayEntryActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
                     if (AddBuyActivity.mInstail != null) {
                         AddBuyActivity.mInstail.finish();
+                    }
+                    if (AddSongActivity.mInstail != null) {
+                        AddSongActivity.mInstail.finish();
                     }
                     break;
                 case -1:

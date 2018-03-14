@@ -68,7 +68,7 @@
         <activity android:name=".ui.OrderListActivity" />
         <activity android:name=".ui.PhoneNumberActivity" />
         <activity
-            android:name=".wxapi.WXPayEntryActivity"
+            android:name="liuliu.yjf.hei.wxapi.WXPayEntryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
 

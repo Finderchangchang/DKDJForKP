@@ -3,6 +3,7 @@ package liuliu.kp.method;
 import java.io.StringReader;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.http.NameValuePair;
@@ -116,12 +117,16 @@ public class WxUtil {
             if (dialog != null) {
                 dialog.dismiss();
             }
-            sbb.append("prepay_id\n" + result.get("prepay_id") + "\n\n");
-            Log.e("prepay_id", result.get("prepay_id"));
-            resultunifiedorder = result;
-            Log.e("resulet:", result + "");
-            genPayReq();//生成签名参数
-            sendPayReq();//调起支付
+            //sbb.append("prepay_id\n" + result.get("prepay_id") + "\n\n");
+            if (!TextUtils.isEmpty(result.get("prepay_id"))) {
+                Log.e("prepay_id", result.get("prepay_id"));
+                resultunifiedorder = result;
+                Log.e("resulet:", result + "");
+                genPayReq();//生成签名参数
+                sendPayReq();//调起支付
+            } else {
+                Toast.makeText(mcontext, result.get("err_code_des"), Toast.LENGTH_SHORT).show();
+            }
 
         }
     }
@@ -135,7 +140,7 @@ public class WxUtil {
             List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
             packageParams.add(new BasicNameValuePair("appid", Utils.getCache("APP_ID")));
 
-            packageParams.add(new BasicNameValuePair("body", BaseApplication.getContext().getResources().getString(R.string.app_name)+"-充值"));
+            packageParams.add(new BasicNameValuePair("body", BaseApplication.getContext().getResources().getString(R.string.app_name) + "-充值"));
             packageParams.add(new BasicNameValuePair("mch_id", Utils.getCache("MCH_ID")));
             packageParams.add(new BasicNameValuePair("nonce_str", nonceStr));
             packageParams.add(new BasicNameValuePair("notify_url", Utils.getCache("domain") + "/wx/userNotify.aspx"));//写你们的回调地址

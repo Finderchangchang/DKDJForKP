@@ -395,7 +395,7 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                     save.setOrdertype("3");
                 }
                 save.setUserid(Utils.getCache(Key.KEY_UserId));
-                save.setRemark(URLEncodeImage(goodTypeEt.getText().toString()));
+//                save.setRemark(URLEncodeImage(goodTypeEt.getText().toString()));
                 if (firstIsbuy) {
                     save.setLat1(buy_poi.getLat() + "");
                     save.setLng1(buy_poi.getLng() + "");

@@ -267,7 +267,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
             } else {
                 save.setOrdertype("1");
                 save.setUserid(getCache(Key.KEY_UserId));
-                save.setRemark(URLEncodeImage(list.get(clickItem).getTag() + ":" + butWhatEt.getText().toString()));
+//                save.setRemark(URLEncodeImage(list.get(clickItem).getTag() + ":" + butWhatEt.getText().toString()));
                 if (jiujinBuyRb.isChecked()) {//选择了
                     save.setNearbuy("1");
                 } else {
