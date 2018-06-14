@@ -398,6 +398,135 @@
 
 
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/colorhuixian" />
+
+                <LinearLayout
+                    android:id="@+id/tj_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/dai_zhifu" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="体          积"
+                        android:textColor="@color/colorhei" />
+
+                    <TextView
+                        android:id="@+id/tj_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="请输入商品金额（元）"
+                        android:textColor="#111"
+                        android:textColorHint="@color/colorhuizi"
+                        android:textSize="14dp" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/colorhuixian" />
+
+                <LinearLayout
+                    android:id="@+id/zl_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/dai_zhifu" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="重          量"
+                        android:textColor="@color/colorhei" />
+
+                    <TextView
+                        android:id="@+id/zl_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="请输入商品金额（元）"
+                        android:inputType="number|numberDecimal"
+                        android:textColor="#111"
+                        android:textColorHint="@color/colorhuizi"
+                        android:textSize="14dp" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/colorhuixian" />
+
+                <LinearLayout
+                    android:id="@+id/clx_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@mipmap/dai_zhifu" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="车   类   型"
+                        android:textColor="@color/colorhei" />
+
+                    <TextView
+                        android:id="@+id/clx_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="请输入商品金额（元）"
+                        android:inputType="number|numberDecimal"
+                        android:textColor="#111"
+                        android:textColorHint="@color/colorhuizi"
+                        android:textSize="14dp" />
+
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

@@ -7,6 +7,7 @@ import liuliu.kp.model.GroupModel;
 import liuliu.kp.model.HBModel;
 import liuliu.kp.model.HBsModel;
 import liuliu.kp.model.MessageModel;
+import liuliu.kp.model.NormalDataModel;
 import liuliu.kp.model.ShopModel;
 import liuliu.kp.model.VersionModel;
 import liuliu.kp.model.WXModel;
@@ -103,4 +104,8 @@ public interface GitHubAPI {
     //红包查询接口（用于消费选红包）
     @GET("App/Android/gethongbaoList.aspx")
     Observable<HBsModel> getHBList(@Query("uid") String orderid);
+
+    //根据城市ID获得体积，重量，车类型
+    @GET("/App/Cpaotui/getTJzlLx.aspx")
+    Observable<NormalDataModel> getTJzlLx(@Query("cityid") String cityid);
 }

@@ -59,6 +59,7 @@ import liuliu.kp.method.WxUtil;
 import liuliu.kp.model.FeiModel;
 import liuliu.kp.model.HBModel;
 import liuliu.kp.model.HBsModel;
+import liuliu.kp.model.NormalDataModel;
 import liuliu.kp.model.PoiModel;
 import liuliu.kp.model.SaveOrderModel;
 import liuliu.kp.model.TagModel;
@@ -134,8 +135,19 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     TextView select_tel_tv;
     @Bind(R.id.select_shop_ll)
     LinearLayout select_shop_ll;
+    @Bind(R.id.tj_ll)
+    LinearLayout tj_ll;
+    @Bind(R.id.zl_ll)
+    LinearLayout zl_ll;
+    @Bind(R.id.clx_ll)
+    LinearLayout clx_ll;
     AddressManageListener addressManageListener;
     WxUtil wxUtil = new WxUtil();
+    List<String> list1 = new ArrayList<>();
+    List<String> list2 = new ArrayList<>();
+    List<String> list2 = new ArrayList<>();
+
+    List<NormalDataModel.Date3> list3 = new ArrayList<>();
 
     void load() {
 
@@ -156,7 +168,22 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                         modelCommonAdapter.refresh(list);
                     }
                 }, error -> {
-                    String a="";
+                    String a = "";
+                });
+        HttpUtil.load()
+                .getTJzlLx(Utils.getCache("cid"))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    if (model != null) {
+                        if (("1").equals(model.getState())) {
+                            list1 = model.getZl();
+                            list2 = model.getTj();
+                            list3 = model.getChe();
+                        }
+                    }
+                }, error -> {
+                    String a = "";
                 });
     }
 
