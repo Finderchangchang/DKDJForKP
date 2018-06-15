@@ -34,6 +34,10 @@ public class OrderDetailModel {
     private String qLng;
     private String sLat;
     private String sLng;
+    private String dname;
+    private String dphone;
+    private String dglog;
+    private String dglat;
     /**
      * DeliverQiangDate : 2016/12/3 14:46:15
      * DeliverDaoDate : 1900/1/1 0:00:00
@@ -46,6 +50,37 @@ public class OrderDetailModel {
     private String DeliverZouDate;
     private String sLngDeliverWanDate;
 
+    public String getDname() {
+        return dname;
+    }
+
+    public void setDname(String dname) {
+        this.dname = dname;
+    }
+
+    public String getDphone() {
+        return dphone;
+    }
+
+    public void setDphone(String dphone) {
+        this.dphone = dphone;
+    }
+
+    public String getDglog() {
+        return dglog;
+    }
+
+    public void setDglog(String dglog) {
+        this.dglog = dglog;
+    }
+
+    public String getDglat() {
+        return dglat;
+    }
+
+    public void setDglat(String dglat) {
+        this.dglat = dglat;
+    }
 
     public String getOrderid() {
         return orderid;

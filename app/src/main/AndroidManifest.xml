@@ -80,10 +80,13 @@
         <!-- </meta-data> -->
         <!-- ff7419a50cf66dcb27a4f2d22536dff3 公司电脑 -->
         <!-- fecd131215e4840e9b59a8c65354d353 家里 -->
-        <!-- 6863fffa97d83c1b904a0784425f6925 正式地址 -->
+        <!-- 6863fffa97d83c1b904a0784425f6925
+            66f82d42a17a9f10a11db31987254818
+         正式地址 -->
+        <!--adc929e0c21348d886da50523c2e4cdf 公司key-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="66f82d42a17a9f10a11db31987254818" />
+            android:value="adc929e0c21348d886da50523c2e4cdf" />
 
         <service android:name="com.amap.api.location.APSService" />
 

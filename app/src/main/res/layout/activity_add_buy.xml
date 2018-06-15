@@ -407,10 +407,10 @@
                 <LinearLayout
                     android:id="@+id/tj_ll"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:paddingLeft="10dp">
 
 
                     <ImageView
@@ -427,7 +427,7 @@
 
                     <TextView
                         android:id="@+id/tj_tv"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
@@ -476,7 +476,6 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:hint="请输入商品金额（元）"
-                        android:inputType="number|numberDecimal"
                         android:textColor="#111"
                         android:textColorHint="@color/colorhuizi"
                         android:textSize="14dp" />
@@ -518,9 +517,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
-                        android:background="@null"
                         android:hint="请输入商品金额（元）"
-                        android:inputType="number|numberDecimal"
                         android:textColor="#111"
                         android:textColorHint="@color/colorhuizi"
                         android:textSize="14dp" />

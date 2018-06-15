@@ -1,9 +1,11 @@
 package liuliu.kp.ui;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
@@ -141,13 +143,19 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
     LinearLayout zl_ll;
     @Bind(R.id.clx_ll)
     LinearLayout clx_ll;
+    @Bind(R.id.tj_tv)
+    TextView tj_tv;
+    @Bind(R.id.zl_tv)
+    TextView zl_tv;
+    @Bind(R.id.clx_tv)
+    TextView clx_tv;
     AddressManageListener addressManageListener;
     WxUtil wxUtil = new WxUtil();
-    List<String> list1 = new ArrayList<>();
-    List<String> list2 = new ArrayList<>();
-    List<String> list2 = new ArrayList<>();
+    String[] list1;
+    String[] list2;
+    String[] list3;
 
-    List<NormalDataModel.Date3> list3 = new ArrayList<>();
+    List<NormalDataModel.Date3> list33 = new ArrayList<>();
 
     void load() {
 
@@ -177,9 +185,27 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                 .subscribe(model -> {
                     if (model != null) {
                         if (("1").equals(model.getState())) {
-                            list1 = model.getZl();
-                            list2 = model.getTj();
-                            list3 = model.getChe();
+                            list1 = new String[model.getZl().size()];
+                            for (int i = 0; i < model.getZl().size(); i++) {
+                                list1[i] = model.getZl().get(i).getName();
+                            }
+                            list2 = new String[model.getTj().size()];
+                            for (int i = 0; i < model.getTj().size(); i++) {
+                                list2[i] = model.getTj().get(i).getName();
+                            }
+                            list3 = new String[model.getChe().size()];
+                            for (int i = 0; i < model.getChe().size(); i++) {
+                                list3[i] = model.getChe().get(i).getName();
+                            }
+                            list33 = model.getChe();
+                            tj_tv.setText(list1[0]);
+                            zl_tv.setText(list2[0]);
+                            clx_tv.setText(list3[0]);
+                            save.setTiji(list1[0]);
+                            save.setZhongliang(list2[0]);
+                            save.setChename(list33.get(0).getName());
+                            save.setCheid(list33.get(0).getId());
+                            save.setChemoney(list33.get(0).getMoney());
                         }
                     }
                 }, error -> {
@@ -193,6 +219,41 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         ButterKnife.bind(this);
         mInstail = this;
         telEt.setText(getCache("tel"));
+        tj_ll.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setItems(list1, (dialogInterface, position) -> {
+                String tj=list1[position];
+                tj_tv.setText(tj);
+                save.setTiji(tj);
+            });
+            builder.setNegativeButton("关闭", null);
+            builder.show();
+        });
+        zl_ll.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setItems(list2, (dialogInterface, position) -> {
+                String zl=list2[position];
+                zl_tv.setText(zl);
+                save.setZhongliang(zl);
+            });
+            builder.setNegativeButton("关闭", null);
+            builder.show();
+        });
+        clx_ll.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setItems(list3, (dialogInterface, position) -> {
+                String zl=list3[position];
+                clx_tv.setText(zl);
+                save.setChename(zl);
+                save.setCheid(list33.get(position).getId());
+                save.setChemoney(list33.get(position).getMoney());
+            });
+            builder.setNegativeButton("关闭", null);
+            builder.show();
+        });
         titleBar.setLeftClick(() -> finish());
         select_shop_ll.setOnClickListener(v -> {
             Intent intent = new Intent(this, ShopListActivity.class);

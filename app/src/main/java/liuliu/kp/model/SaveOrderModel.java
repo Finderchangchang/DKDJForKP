@@ -31,6 +31,52 @@ public class SaveOrderModel {
     private String ishongbao;//1红包消费，否则传补传都行。
     private String hbid;// 红包编号
 
+    private String tiji;// 体积名字，
+    private String zhongliang;//重量名字，
+    private String cheid;//车辆ID，
+    private String chename;//车名称，
+    private String chemoney;//车辆的附加费
+
+    public String getTiji() {
+        return tiji;
+    }
+
+    public void setTiji(String tiji) {
+        this.tiji = tiji;
+    }
+
+    public String getZhongliang() {
+        return zhongliang;
+    }
+
+    public void setZhongliang(String zhongliang) {
+        this.zhongliang = zhongliang;
+    }
+
+    public String getCheid() {
+        return cheid;
+    }
+
+    public void setCheid(String cheid) {
+        this.cheid = cheid;
+    }
+
+    public String getChename() {
+        return chename;
+    }
+
+    public void setChename(String chename) {
+        this.chename = chename;
+    }
+
+    public String getChemoney() {
+        return chemoney;
+    }
+
+    public void setChemoney(String chemoney) {
+        this.chemoney = chemoney;
+    }
+
     public String getIshongbao() {
         return ishongbao;
     }

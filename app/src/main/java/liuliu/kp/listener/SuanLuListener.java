@@ -103,6 +103,12 @@ public class SuanLuListener implements ISuanLuMView {
             map.put("ishongbao", "1");
             map.put("hbid", model.getHbid());
         }
+        map.put("tiji", model.getTiji());
+        map.put("zhongliang", model.getZhongliang());
+        map.put("cheid", model.getCheid());
+        map.put("chename", model.getChename());
+        map.put("chemoney", model.getChemoney());
+
         HttpUtil.load()
                 .saveOrder(map)
                 .subscribeOn(Schedulers.io())
