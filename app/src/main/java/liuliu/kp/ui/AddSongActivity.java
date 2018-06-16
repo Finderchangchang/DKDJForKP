@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
@@ -57,6 +58,7 @@ import liuliu.kp.method.WxUtil;
 import liuliu.kp.model.FeiModel;
 import liuliu.kp.model.HBModel;
 import liuliu.kp.model.HBsModel;
+import liuliu.kp.model.NormalDataModel;
 import liuliu.kp.model.PoiModel;
 import liuliu.kp.model.SaveOrderModel;
 import liuliu.kp.model.TagModel;
@@ -126,6 +128,23 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
     TextView ti2Tv;
     @Bind(R.id.address_length_tv)
     TextView address_length_tv;
+
+    @Bind(R.id.tj_ll)
+    LinearLayout tj_ll;
+    @Bind(R.id.zl_ll)
+    LinearLayout zl_ll;
+    @Bind(R.id.clx_ll)
+    LinearLayout clx_ll;
+    @Bind(R.id.tj_tv)
+    TextView tj_tv;
+    @Bind(R.id.zl_tv)
+    TextView zl_tv;
+    @Bind(R.id.clx_tv)
+    TextView clx_tv;
+    String[] list1;
+    String[] list2;
+    String[] list3;
+    List<NormalDataModel.Date3> list33 = new ArrayList<>();
     private RouteSearch routeSearch;
     private double address_length = 0;
     private SuanLuListener mListener;
@@ -164,6 +183,39 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                 }, error -> {
                     String a="";
                 });
+        HttpUtil.load()
+                .getTJzlLx(Utils.getCache("cid"))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    if (model != null) {
+                        if (("1").equals(model.getState())) {
+                            list1 = new String[model.getZl().size()];
+                            for (int i = 0; i < model.getZl().size(); i++) {
+                                list1[i] = model.getZl().get(i).getName();
+                            }
+                            list2 = new String[model.getTj().size()];
+                            for (int i = 0; i < model.getTj().size(); i++) {
+                                list2[i] = model.getTj().get(i).getName();
+                            }
+                            list3 = new String[model.getChe().size()];
+                            for (int i = 0; i < model.getChe().size(); i++) {
+                                list3[i] = model.getChe().get(i).getName();
+                            }
+                            list33 = model.getChe();
+                            tj_tv.setText(list1[0]);
+                            zl_tv.setText(list2[0]);
+                            clx_tv.setText(list3[0]);
+                            save.setTiji(list1[0]);
+                            save.setZhongliang(list2[0]);
+                            save.setChename(list33.get(0).getName());
+                            save.setCheid(list33.get(0).getId());
+                            save.setChemoney(list33.get(0).getMoney());
+                        }
+                    }
+                }, error -> {
+                    String a = "";
+                });
     }
 
 
@@ -173,6 +225,43 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
         ButterKnife.bind(this);
         mInstail = this;
         mListener = new SuanLuListener(this);
+        tj_ll.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setItems(list1, (dialogInterface, position) -> {
+                String tj=list1[position];
+                tj_tv.setText(tj);
+                save.setTiji(tj);
+            });
+            builder.setNegativeButton("关闭", null);
+            builder.show();
+        });
+        zl_ll.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setItems(list2, (dialogInterface, position) -> {
+                String zl=list2[position];
+                zl_tv.setText(zl);
+                save.setZhongliang(zl);
+            });
+            builder.setNegativeButton("关闭", null);
+            builder.show();
+        });
+        clx_ll.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("提示");
+            builder.setItems(list3, (dialogInterface, position) -> {
+                String zl=list3[position];
+                clx_tv.setText(zl);
+                save.setChename(zl);
+                save.setCheid(list33.get(position).getId());
+                save.setChemoney(list33.get(position).getMoney());
+                sun_price();
+                priceTv.setText("￥"+total_money);
+            });
+            builder.setNegativeButton("关闭", null);
+            builder.show();
+        });
         addressManageListener = new AddressManageListener(this);
         scBuyAddressIv.setOnClickListener(v -> {//收藏购买地址
             if (firstIsbuy) {
@@ -422,10 +511,10 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                 save.setTel1(tel1Et.getText().toString().trim());
                 save.setTel2(tel2Et.getText().toString().trim());
                 if (feiyong != null) {
-                    if (!("0.00").equals(feiyong.getTotalfee())) {
-                        save.setSendfee(feiyong.getQibufee());
+                    if (!("0.00").equals(total_money)) {
                         save.setLichengfee(feiyong.getLichengfee());
-                        save.setTotalfee(feiyong.getTotalfee());
+                        save.setSendfee(total_money);
+                        save.setTotalfee(total_money);
                         save.setJuli(feiyong.getAlljuli());
                         save.setSource("2");//android设备
                         save.setIsdaishoufee("0");
@@ -499,7 +588,7 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
     }
 
     FeiModel feiyong;
-
+    String total_money="0";
     @Override
     public void slResult(FeiModel model, String error) {
         feiyong = model;
@@ -508,23 +597,30 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
             priceTv.setText(error);
         } else {
             if (model != null) {
-                priceTv.setText("￥" + model.getTotalfee());
+                sun_price();
+                priceTv.setText("￥"+total_money);
             }
         }
         dialog.dismiss();
     }
-
+    private double sun_price(){
+        double total=0;
+        total+=Double.parseDouble(save.getChemoney());
+        total+=Double.parseDouble(feiyong.getTotalfee());
+        total_money=total+"";
+        return total;
+    }
     @Override
     public void saveResult(String orderId, String totalPrice) {
         bottom_dialog.dismiss();
         Double price = 0.0;
         try {
-            price = Double.parseDouble(totalPrice) - Double.parseDouble(lq_model.get领取金额());
+            price = Double.parseDouble(total_money) - Double.parseDouble(lq_model.get领取金额());
             if (price <= 0) {
                 price = 0.01;
             }
         } catch (Exception e) {
-            price = Double.parseDouble(totalPrice);
+            price = Double.parseDouble(total_money);
         }
         BigDecimal b = new BigDecimal(price);
         price = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -778,7 +874,7 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
             wx_cb.setChecked(false);
             zfb_cb.setChecked(true);
         });
-        pay_tv.setText(feiyong.getTotalfee() + "元");
+        pay_tv.setText(sun_price() + "元");
         pay_btn.setOnClickListener(v -> {
             if (lq_model != null) {
                 save.setHbid(lq_model.get编号());
@@ -789,12 +885,12 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
         RelativeLayout hb_pay_rl = (RelativeLayout) inflate.findViewById(R.id.hb_pay_rl);
         Double price1 = 0.0;
         try {
-            price1 = Double.parseDouble(feiyong.getTotalfee()) - Double.parseDouble(lq_model.get领取金额());
+            price1 = sun_price() - Double.parseDouble(lq_model.get领取金额());
             if (price1 <= 0) {
                 price1 = 0.01;
             }
         } catch (Exception e) {
-            price1 = Double.parseDouble(feiyong.getTotalfee());
+            price1 = sun_price();
         }
         BigDecimal b = new BigDecimal(price1);
         price1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();

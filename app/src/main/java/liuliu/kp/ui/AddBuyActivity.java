@@ -212,7 +212,14 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                     String a = "";
                 });
     }
-
+    private double sun_price(){
+        double total=0;
+        total+=Double.parseDouble(save.getChemoney());
+        total+=Double.parseDouble(feiyong.getTotalfee());
+        total_money=total+"";
+        return total;
+    }
+    String total_money="0";
     @Override
     public void initViews() {
         setContentView(R.layout.activity_add_buy);
@@ -250,6 +257,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                 save.setChename(zl);
                 save.setCheid(list33.get(position).getId());
                 save.setChemoney(list33.get(position).getMoney());
+                sun_price();
+                priceTv.setText("￥"+total_money);
             });
             builder.setNegativeButton("关闭", null);
             builder.show();
@@ -404,10 +413,11 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                     save.setFoodfee(URLEncodeImage(jeEt.getText().toString().trim()));//帮我买的知道金额
                 }
                 if (feiyong != null) {
-                    if (!("0.00").equals(feiyong.getTotalfee())) {
-                        save.setSendfee(feiyong.getQibufee());
+                    if (!("0.00").equals(total_money)) {
+                        //save.setSendfee(feiyong.getQibufee());
                         save.setLichengfee(feiyong.getLichengfee());
-                        save.setTotalfee(feiyong.getTotalfee());
+                        save.setSendfee(total_money);
+                        save.setTotalfee(total_money);
                         save.setJuli(feiyong.getAlljuli());
                         save.setSource("2");//android设备
                         save.setIsdaishoufee("0");
@@ -515,12 +525,12 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         RelativeLayout hb_pay_rl = (RelativeLayout) inflate.findViewById(R.id.hb_pay_rl);
         Double price1 = 0.0;
         try {
-            price1 = Double.parseDouble(feiyong.getTotalfee()) - Double.parseDouble(lq_model.get领取金额());
+            price1 = Double.parseDouble(total_money) - Double.parseDouble(lq_model.get领取金额());
             if (price1 <= 0) {
                 price1 = 0.01;
             }
         } catch (Exception e) {
-            price1 = Double.parseDouble(feiyong.getTotalfee());
+            price1 = Double.parseDouble(total_money);
         }
         BigDecimal b = new BigDecimal(price1);
         price1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -771,7 +781,8 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
             priceTv.setText(error);
         } else {
             if (model != null) {
-                priceTv.setText("￥" + model.getTotalfee());
+                sun_price();
+                priceTv.setText("￥"+total_money);
             }
         }
         dialog.dismiss();

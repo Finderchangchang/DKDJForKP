@@ -2,6 +2,7 @@ package liuliu.kp.ui;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.UiSettings;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -93,13 +102,15 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
     LinearLayout q_tel_ll;
     LinearLayout s_tel_ll;
     TextView s_address_tv;
+    MapView m_map;
     LinearLayout qs_ll;
     TextView qs_name_tv;
+    ImageView qs_tel_tv;
     TextView remark_tv;
     TextView pay_state_tv;
     Button pay_btn;
     WxUtil wxUtil=new WxUtil();
-
+    AMap map;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.item_order_detail, null, false);
@@ -114,6 +125,8 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         state2_tv = (TextView) view.findViewById(R.id.state2_tv);
         state2_time_tv = (TextView) view.findViewById(R.id.state2_time_tv);
         state3_iv = (ImageView) view.findViewById(R.id.state3_iv);
+        m_map= (MapView) view.findViewById(R.id.m_map);
+        m_map.onCreate(savedInstanceState);
         state3_tv = (TextView) view.findViewById(R.id.state3_tv);
         state3_time_tv = (TextView) view.findViewById(R.id.state3_time_tv);
         state4_iv = (ImageView) view.findViewById(R.id.state4_iv);
@@ -130,7 +143,7 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         order4_ll = (LinearLayout) view.findViewById(R.id.order4_ll);
         order5_ll = (LinearLayout) view.findViewById(R.id.order5_ll);
         order6_ll = (LinearLayout) view.findViewById(R.id.order6_ll);
-
+        qs_tel_tv= (ImageView) view.findViewById(R.id.qs_tel_tv);
         order_state_tv = (TextView) view.findViewById(R.id.order_state_tv);
         order_time_tv = (TextView) view.findViewById(R.id.order_time_tv);
         send_price_tv = (TextView) view.findViewById(R.id.send_price_tv);
@@ -204,11 +217,11 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
                 startActivity(intent);
             });
             qs_ll.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + model.getDeliverPhone()));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + model.getDphone()));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             });
-            qs_name_tv.setText(model.getDeliverName());
+            qs_name_tv.setText(model.getDname());
             send_price_tv.setText(model.getTotalPrice() + "元");
             jl_tv.setText("约" + model.getJuLi() + "公里");
             good_type_tv.setText(model.getOrderType());
@@ -216,6 +229,19 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
             state1_time_tv.setText(model.getOrderTime());
             String state = getState(model);
             state1_orderid_tv.setText("订单号：" + model.getOrderid());
+            AMap aMap = m_map.getMap();
+            try {
+                //绘制marker
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(new LatLng(Double.parseDouble(model.getDglat()),Double.parseDouble(model.getDglog())));
+                markerOptions.title("当前位置");
+                markerOptions.visible(true);
+                aMap.addMarker(markerOptions);
+                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(39.986919,116.353369), 16));
+            }catch (Exception e){
+                m_map.setVisibility(View.GONE);
+            }
+
             switch (state) {
                 case "未支付":
                     order6_ll.setVisibility(View.GONE);
