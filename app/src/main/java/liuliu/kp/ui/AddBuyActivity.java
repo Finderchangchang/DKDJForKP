@@ -185,13 +185,13 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                 .subscribe(model -> {
                     if (model != null) {
                         if (("1").equals(model.getState())) {
-                            list1 = new String[model.getZl().size()];
-                            for (int i = 0; i < model.getZl().size(); i++) {
-                                list1[i] = model.getZl().get(i).getName();
-                            }
-                            list2 = new String[model.getTj().size()];
+                            list1 = new String[model.getTj().size()];
                             for (int i = 0; i < model.getTj().size(); i++) {
-                                list2[i] = model.getTj().get(i).getName();
+                                list1[i] = model.getTj().get(i).getName();
+                            }
+                            list2 = new String[model.getZl().size()];
+                            for (int i = 0; i < model.getZl().size(); i++) {
+                                list2[i] = model.getZl().get(i).getName();
                             }
                             list3 = new String[model.getChe().size()];
                             for (int i = 0; i < model.getChe().size(); i++) {
@@ -212,14 +212,17 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                     String a = "";
                 });
     }
-    private double sun_price(){
-        double total=0;
-        total+=Double.parseDouble(save.getChemoney());
-        total+=Double.parseDouble(feiyong.getTotalfee());
-        total_money=total+"";
+
+    private double sun_price() {
+        double total = 0;
+        total += Double.parseDouble(save.getChemoney());
+        total += Double.parseDouble(feiyong.getTotalfee());
+        total_money = total + "";
         return total;
     }
-    String total_money="0";
+
+    String total_money = "0";
+
     @Override
     public void initViews() {
         setContentView(R.layout.activity_add_buy);
@@ -230,7 +233,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提示");
             builder.setItems(list1, (dialogInterface, position) -> {
-                String tj=list1[position];
+                String tj = list1[position];
                 tj_tv.setText(tj);
                 save.setTiji(tj);
             });
@@ -241,7 +244,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提示");
             builder.setItems(list2, (dialogInterface, position) -> {
-                String zl=list2[position];
+                String zl = list2[position];
                 zl_tv.setText(zl);
                 save.setZhongliang(zl);
             });
@@ -252,13 +255,13 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提示");
             builder.setItems(list3, (dialogInterface, position) -> {
-                String zl=list3[position];
+                String zl = list3[position];
                 clx_tv.setText(zl);
                 save.setChename(zl);
                 save.setCheid(list33.get(position).getId());
                 save.setChemoney(list33.get(position).getMoney());
                 sun_price();
-                priceTv.setText("￥"+total_money);
+                priceTv.setText("￥" + total_money);
             });
             builder.setNegativeButton("关闭", null);
             builder.show();
@@ -362,80 +365,16 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
             else if (("").equals(jeEt.getText().toString().trim()) && !noKnowPriceRb.isChecked()) {
                 ToastShort("请输入商品金额");
             } else {
-                save.setOrdertype("1");
-                save.setUserid(getCache(Key.KEY_UserId));
-//                save.setRemark(URLEncodeImage(list.get(clickItem).getTag() + ":" + butWhatEt.getText().toString()));
-                if (jiujinBuyRb.isChecked()) {//选择了
-                    save.setNearbuy("1");
-                } else {
-                    save.setNearbuy("0");
-                    if (firstIsbuy) {
-                        save.setLat1(buy_poi.getLat() + "");
-                        save.setLng1(buy_poi.getLng() + "");
-                    } else {
-                        save.setLat1(send_poi.getLat() + "");
-                        save.setLng1(send_poi.getLng() + "");
-                    }
-                }
-                if (firstIsbuy) {
-                    save.setLat2(send_poi.getLat() + "");
-                    save.setLng2(send_poi.getLng() + "");
-                    if (buy_poi != null) {
-                        save.setAddress1(URLEncodeImage(buy_poi.getPoiAddress()));
-                    } else {
-                        save.setAddress1("");
-                    }
-                    if (send_poi != null) {
-                        save.setAddress2(URLEncodeImage(send_poi.getPoiAddress()));
-                    } else {
-                        save.setAddress2("");
-                    }
-                } else {
-                    save.setLat2(buy_poi.getLat() + "");
-                    save.setLng2(buy_poi.getLng() + "");
-                    if (buy_poi != null) {
-                        save.setAddress2(URLEncodeImage(buy_poi.getPoiAddress()));
-                    } else {
-                        save.setAddress2("");
-                    }
-                    if (send_poi != null) {
-                        save.setAddress1(URLEncodeImage(send_poi.getPoiAddress()));
-                    } else {
-                        save.setAddress1("");
-                    }
-                }
-                save.setTel2(telEt.getText().toString().trim());//必填
-                if (noKnowPriceRb.isChecked()) {
-                    save.setIsknow("0");//不知
-                    save.setFoodfee("0");
-                } else {
-                    save.setIsknow("1");//知道金额
-                    save.setFoodfee(URLEncodeImage(jeEt.getText().toString().trim()));//帮我买的知道金额
-                }
-                if (feiyong != null) {
-                    if (!("0.00").equals(total_money)) {
-                        //save.setSendfee(feiyong.getQibufee());
-                        save.setLichengfee(feiyong.getLichengfee());
-                        save.setSendfee(total_money);
-                        save.setTotalfee(total_money);
-                        save.setJuli(feiyong.getAlljuli());
-                        save.setSource("2");//android设备
-                        save.setIsdaishoufee("0");
-                        FinalDb db = FinalDb.create(this);
-                        if (send_poi != null) {
-                            db.save(send_poi);
-                        }
-                        if (buy_poi != null) {
-                            db.save(buy_poi);
-                        }
-                        HBListener listener = new HBListener(this);
-                        listener.getHBList();//检测当前是否有红包
-                    } else {
-                        ToastShort("距离太远，请重新下单");
-                    }
-                } else {
-                    ToastShort("请重新选择地址");
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddBuyActivity.mInstail);
+                builder.setTitle("提示")
+                        .setMessage("请确保您选择的体积，重量，车类型是否正确！")
+                        .setPositiveButton("确定", (dialog, id) -> {
+                            save_order();
+                        })
+                        .setNegativeButton("取消", (dialog, id) -> {
+
+                        });
+                builder.show();
 
             }
         });
@@ -461,6 +400,84 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
                 });
             }
         });
+    }
+
+    private void save_order() {
+        save.setOrdertype("1");
+        save.setUserid(getCache(Key.KEY_UserId));
+//                save.setRemark(URLEncodeImage(list.get(clickItem).getTag() + ":" + butWhatEt.getText().toString()));
+        if (jiujinBuyRb.isChecked()) {//选择了
+            save.setNearbuy("1");
+        } else {
+            save.setNearbuy("0");
+            if (firstIsbuy) {
+                save.setLat1(buy_poi.getLat() + "");
+                save.setLng1(buy_poi.getLng() + "");
+            } else {
+                save.setLat1(send_poi.getLat() + "");
+                save.setLng1(send_poi.getLng() + "");
+            }
+        }
+        if (firstIsbuy) {
+            save.setLat2(send_poi.getLat() + "");
+            save.setLng2(send_poi.getLng() + "");
+            if (buy_poi != null) {
+                save.setAddress1(URLEncodeImage(buy_poi.getPoiAddress()));
+            } else {
+                save.setAddress1("");
+            }
+            if (send_poi != null) {
+                save.setAddress2(URLEncodeImage(send_poi.getPoiAddress()));
+            } else {
+                save.setAddress2("");
+            }
+        } else {
+            save.setLat2(buy_poi.getLat() + "");
+            save.setLng2(buy_poi.getLng() + "");
+            if (buy_poi != null) {
+                save.setAddress2(URLEncodeImage(buy_poi.getPoiAddress()));
+            } else {
+                save.setAddress2("");
+            }
+            if (send_poi != null) {
+                save.setAddress1(URLEncodeImage(send_poi.getPoiAddress()));
+            } else {
+                save.setAddress1("");
+            }
+        }
+        save.setTel2(telEt.getText().toString().trim());//必填
+        if (noKnowPriceRb.isChecked()) {
+            save.setIsknow("0");//不知
+            save.setFoodfee("0");
+        } else {
+            save.setIsknow("1");//知道金额
+            save.setFoodfee(URLEncodeImage(jeEt.getText().toString().trim()));//帮我买的知道金额
+        }
+        if (feiyong != null) {
+            if (!("0.00").equals(total_money)) {
+                //save.setSendfee(feiyong.getQibufee());
+                save.setLichengfee(feiyong.getLichengfee());
+                save.setSendfee(total_money);
+                save.setTotalfee(total_money);
+                save.setJuli(feiyong.getAlljuli());
+                save.setSource("2");//android设备
+                save.setIsdaishoufee("0");
+                FinalDb db = FinalDb.create(this);
+                if (send_poi != null) {
+                    db.save(send_poi);
+                }
+                if (buy_poi != null) {
+                    db.save(buy_poi);
+                }
+                HBListener listener = new HBListener(this);
+                listener.getHBList();//检测当前是否有红包
+            } else {
+                ToastShort("距离太远，请重新下单");
+            }
+        } else {
+            ToastShort("请重新选择地址");
+        }
+
     }
 
     boolean pay_is_wx = true;
@@ -782,7 +799,7 @@ public class AddBuyActivity extends BaseActivity implements IAddBuy, IAddressMan
         } else {
             if (model != null) {
                 sun_price();
-                priceTv.setText("￥"+total_money);
+                priceTv.setText("￥" + total_money);
             }
         }
         dialog.dismiss();

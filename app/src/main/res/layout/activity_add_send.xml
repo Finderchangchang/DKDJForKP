@@ -480,7 +480,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="请输入商品金额（元）"
+                        android:hint="请选择货物体积"
                         android:textColor="#111"
                         android:textColorHint="@color/colorhuizi"
                         android:textSize="14dp" />
@@ -523,7 +523,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:hint="请输入商品金额（元）"
+                        android:hint="请选择货物重量"
                         android:textColor="#111"
                         android:textColorHint="@color/colorhuizi"
                         android:textSize="14dp" />
@@ -565,7 +565,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
-                        android:hint="请输入商品金额（元）"
+                        android:hint="请选择车类型"
                         android:textColor="#111"
                         android:textColorHint="@color/colorhuizi"
                         android:textSize="14dp" />

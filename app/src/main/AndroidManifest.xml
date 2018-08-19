@@ -89,6 +89,17 @@
             adc929e0c21348d886da50523c2e4cdf
 
             -->
+        <!--公司debug
+            27:C7:2D:85:E8:03:C5:EC:80:57:2A:B0:3F:C2:B2:B8:4F:60:7E:B3
+            adc929e0c21348d886da50523c2e4cdf
+        -->
+        <!--家里debug
+            C0:1A:FD:DC:E2:0B:77:A9:0C:A6:1F:DF:B3:3B:BE:05:AC:28:B4:A2
+            adc929e0c21348d886da50523c2e4cdf
+        -->
+        <!--
+        66f82d42a17a9f10a11db31987254818 正式版
+        adc929e0c21348d886da50523c2e4cdf 公司key-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="66f82d42a17a9f10a11db31987254818" />

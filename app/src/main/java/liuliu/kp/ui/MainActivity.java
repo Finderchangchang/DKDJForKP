@@ -274,19 +274,21 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
                             city_name_tv.setText(result.getRegeocodeAddress().getCity());
                             String city = result.getRegeocodeAddress().getCity();
                             if (!TextUtils.isEmpty(city)) {
-                                if (city.contains("市")) {
-                                    city = city.substring(0, city.length() - 1);
-                                }
+                                city=city.replace("市","");
                             }
-                            List<CityModel> list = db.findAllByWhere(CityModel.class, "cname like '%" + city + "%'");
-                            if (list.size() > 0) {
-                                Utils.putCache("cname", result.getRegeocodeAddress().getCity());
-                                Utils.putCache("cid", list.get(0).getCid());
-                                Utils.putCache("now_lat", list.get(0).getLat() + "");//获取纬度
-                                Utils.putCache("now_lng", list.get(0).getLng() + "");//获取纬度
-                                mListener.loadQSLatLngs(list.get(0).getCid());
-                            } else {
-                                Utils.putCache("cid", "");
+                            if (TextUtils.isEmpty(Utils.getCache("now_lat"))) {
+                                List<CityModel> list = db.findAllByWhere(CityModel.class, "cname like '%" + city + "%'");
+                                if (list.size() > 0) {
+                                    Utils.putCache("cname", result.getRegeocodeAddress().getCity());
+                                    Utils.putCache("cid", list.get(0).getCid());
+                                    Utils.putCache("now_lat", list.get(0).getLat() + "");//获取纬度
+                                    Utils.putCache("now_lng", list.get(0).getLng() + "");//获取纬度
+                                    mListener.loadQSLatLngs(list.get(0).getCid());
+                                } else {
+                                    Utils.putCache("cid", "");
+                                    Utils.putCache("now_lat", "");//获取纬度
+                                    Utils.putCache("now_lng", "");//获取纬度
+                                }
                             }
                             if (dialog != null) {
                                 dialog.dismiss();
@@ -355,9 +357,12 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
             city_name_tv.setText(aMapLocation.getCity());
             Utils.putCache("now_lat", aMapLocation.getLatitude() + "");//获取纬度
             Utils.putCache("now_lng", aMapLocation.getLongitude() + "");//获取纬度
-            List<CityModel> list1 = db.findAll(CityModel.class);
             String city = aMapLocation.getCity();
-            List<CityModel> list = db.findAllByWhere(CityModel.class, "cname like '%" + aMapLocation.getCity() + "%'");
+            if (!TextUtils.isEmpty(city)) {
+                city=city.replace("市","");
+            }
+            List<CityModel> list1 = db.findAll(CityModel.class);
+            List<CityModel> list = db.findAllByWhere(CityModel.class, "cname like '%" + city + "%'");
             if (list.size() > 0) {
                 Utils.putCache("cid", list.get(0).getCid());
                 mListener.loadQSLatLngs(list.get(0).getCid());
@@ -394,10 +399,11 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
                 if (city != null) {
                     aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(city.getLat()), Double.parseDouble(city.getLng())), 16));
                     city_name_tv.setText(city.getCname() + "市");
-                    List<CityModel> list1 = db.findAll(CityModel.class);
                     List<CityModel> list = db.findAllByWhere(CityModel.class, "cname like '%" + city.getCname() + "%'");
                     if (list.size() > 0) {
                         Utils.putCache("cid", list.get(0).getCid());
+                        Utils.putCache("now_lat", "");//获取纬度
+                        Utils.putCache("now_lng", "");//获取纬度
                         mListener.loadQSLatLngs(list.get(0).getCid());
                     } else {
                         Utils.putCache("cid", "");

@@ -21,7 +21,7 @@ public class BaseApplication extends Application {
                 .useID()
                 .trackAllFragments()
                 .setChannel("应用宝"));
-        CrashReport.initCrashReport(getApplicationContext(), "01db3ab7d4", false);
+        CrashReport.initCrashReport(getApplicationContext(), "06a60e01ad", false);
     }
 
     public static Context getContext() {

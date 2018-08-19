@@ -16,6 +16,7 @@ import liuliu.kp.base.BaseActivity;
 import liuliu.kp.method.CommonAdapter;
 import liuliu.kp.method.CommonViewHolder;
 import liuliu.kp.method.HttpUtil;
+import liuliu.kp.method.Utils;
 import liuliu.kp.model.CityModel;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -71,6 +72,7 @@ public class CityActivity extends BaseActivity {
         lv.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent();
             intent.putExtra("city", contactses.get(position));
+            Utils.putCache("cid", contactses.get(position).getCid());
             setResult(77, intent);
             finish();
         });

@@ -109,8 +109,9 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
     TextView remark_tv;
     TextView pay_state_tv;
     Button pay_btn;
-    WxUtil wxUtil=new WxUtil();
+    WxUtil wxUtil = new WxUtil();
     AMap map;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.item_order_detail, null, false);
@@ -125,7 +126,7 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         state2_tv = (TextView) view.findViewById(R.id.state2_tv);
         state2_time_tv = (TextView) view.findViewById(R.id.state2_time_tv);
         state3_iv = (ImageView) view.findViewById(R.id.state3_iv);
-        m_map= (MapView) view.findViewById(R.id.m_map);
+        m_map = (MapView) view.findViewById(R.id.m_map);
         m_map.onCreate(savedInstanceState);
         state3_tv = (TextView) view.findViewById(R.id.state3_tv);
         state3_time_tv = (TextView) view.findViewById(R.id.state3_time_tv);
@@ -143,7 +144,7 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         order4_ll = (LinearLayout) view.findViewById(R.id.order4_ll);
         order5_ll = (LinearLayout) view.findViewById(R.id.order5_ll);
         order6_ll = (LinearLayout) view.findViewById(R.id.order6_ll);
-        qs_tel_tv= (ImageView) view.findViewById(R.id.qs_tel_tv);
+        qs_tel_tv = (ImageView) view.findViewById(R.id.qs_tel_tv);
         order_state_tv = (TextView) view.findViewById(R.id.order_state_tv);
         order_time_tv = (TextView) view.findViewById(R.id.order_time_tv);
         send_price_tv = (TextView) view.findViewById(R.id.send_price_tv);
@@ -230,15 +231,16 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
             String state = getState(model);
             state1_orderid_tv.setText("订单号：" + model.getOrderid());
             AMap aMap = m_map.getMap();
-            try {
+            if (!("0").equals(model.getDglat())) {
+                m_map.setVisibility(View.VISIBLE);
                 //绘制marker
                 MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(new LatLng(Double.parseDouble(model.getDglat()),Double.parseDouble(model.getDglog())));
+                markerOptions.position(new LatLng(Double.parseDouble(model.getDglat()), Double.parseDouble(model.getDglng())));
                 markerOptions.title("当前位置");
                 markerOptions.visible(true);
                 aMap.addMarker(markerOptions);
-                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(39.986919,116.353369), 16));
-            }catch (Exception e){
+                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(model.getDglat()), Double.parseDouble(model.getDglng())), 16));
+            } else {
                 m_map.setVisibility(View.GONE);
             }
 
@@ -369,7 +371,7 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         pay_btn.setOnClickListener(v -> {
             if (orderId != null) {
                 if (!pay_is_wx) {
-                    String orderInfo = getOrderInfo(getResources().getString(R.string.app_name), getResources().getString(R.string.app_name)+"支付", price, orderId);
+                    String orderInfo = getOrderInfo(getResources().getString(R.string.app_name), getResources().getString(R.string.app_name) + "支付", price, orderId);
                     String sign = sign(orderInfo);
                     try {
                         sign = URLEncoder.encode(sign, "UTF-8");
@@ -428,7 +430,7 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
         }
 
         public void run() {
-            wxUtil.load(OrderDetailsActivity.mInstails, BaseApplication.getContext().getResources().getString(R.string.app_name), BaseApplication.getContext().getResources().getString(R.string.app_name)+"支付", Order_Id, Order_Price);
+            wxUtil.load(OrderDetailsActivity.mInstails, BaseApplication.getContext().getResources().getString(R.string.app_name), BaseApplication.getContext().getResources().getString(R.string.app_name) + "支付", Order_Id, Order_Price);
         }
     }
 
@@ -518,6 +520,7 @@ public class OrderDetailFragment extends Fragment implements IOrderDetail {
     private String sign(String content) {
         return SignUtils.sign(content, Utils.getCache("RSA_PRIVATE"));
     }
+
     /**
      * get the sign type we use. 获取签名方式
      */

@@ -181,7 +181,7 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                         modelCommonAdapter.refresh(list);
                     }
                 }, error -> {
-                    String a="";
+                    String a = "";
                 });
         HttpUtil.load()
                 .getTJzlLx(Utils.getCache("cid"))
@@ -190,13 +190,13 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                 .subscribe(model -> {
                     if (model != null) {
                         if (("1").equals(model.getState())) {
-                            list1 = new String[model.getZl().size()];
-                            for (int i = 0; i < model.getZl().size(); i++) {
-                                list1[i] = model.getZl().get(i).getName();
-                            }
-                            list2 = new String[model.getTj().size()];
+                            list1 = new String[model.getTj().size()];
                             for (int i = 0; i < model.getTj().size(); i++) {
-                                list2[i] = model.getTj().get(i).getName();
+                                list1[i] = model.getTj().get(i).getName();
+                            }
+                            list2 = new String[model.getZl().size()];
+                            for (int i = 0; i < model.getZl().size(); i++) {
+                                list2[i] = model.getZl().get(i).getName();
                             }
                             list3 = new String[model.getChe().size()];
                             for (int i = 0; i < model.getChe().size(); i++) {
@@ -229,7 +229,7 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提示");
             builder.setItems(list1, (dialogInterface, position) -> {
-                String tj=list1[position];
+                String tj = list1[position];
                 tj_tv.setText(tj);
                 save.setTiji(tj);
             });
@@ -240,7 +240,7 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提示");
             builder.setItems(list2, (dialogInterface, position) -> {
-                String zl=list2[position];
+                String zl = list2[position];
                 zl_tv.setText(zl);
                 save.setZhongliang(zl);
             });
@@ -251,13 +251,13 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提示");
             builder.setItems(list3, (dialogInterface, position) -> {
-                String zl=list3[position];
+                String zl = list3[position];
                 clx_tv.setText(zl);
                 save.setChename(zl);
                 save.setCheid(list33.get(position).getId());
                 save.setChemoney(list33.get(position).getMoney());
                 sun_price();
-                priceTv.setText("￥"+total_money);
+                priceTv.setText("￥" + total_money);
             });
             builder.setNegativeButton("关闭", null);
             builder.show();
@@ -478,63 +478,16 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
             else if (("").equals(goodTypeEt.getText().toString().trim())) {
                 ToastShort("请填写物品类型");
             } else {
-                if (isSong) {
-                    save.setOrdertype("2");
-                } else {
-                    save.setOrdertype("3");
-                }
-                save.setUserid(Utils.getCache(Key.KEY_UserId));
-//                save.setRemark(URLEncodeImage(goodTypeEt.getText().toString()));
-                if (firstIsbuy) {
-                    save.setLat1(buy_poi.getLat() + "");
-                    save.setLng1(buy_poi.getLng() + "");
-                    save.setLat2(send_poi.getLat() + "");
-                    save.setLng2(send_poi.getLng() + "");
-                    if (buy_poi != null) {
-                        save.setAddress1(URLEncodeImage(buy_poi.getPoiAddress()));
-                    } else {
-                        save.setAddress1("");
-                    }
-                    if (send_poi != null) {
-                        save.setAddress2(URLEncodeImage(send_poi.getPoiAddress()));
-                    } else {
-                        save.setAddress2("");
-                    }
-                } else {
-                    save.setLat1(send_poi.getLat() + "");
-                    save.setLng1(send_poi.getLng() + "");
-                    save.setLat2(buy_poi.getLat() + "");
-                    save.setLng2(buy_poi.getLng() + "");
-                    save.setAddress2(URLEncodeImage(buy_poi.getPoiAddress()));
-                    save.setAddress1(URLEncodeImage(send_poi.getPoiAddress()));
-                }
-                save.setTel1(tel1Et.getText().toString().trim());
-                save.setTel2(tel2Et.getText().toString().trim());
-                if (feiyong != null) {
-                    if (!("0.00").equals(total_money)) {
-                        save.setLichengfee(feiyong.getLichengfee());
-                        save.setSendfee(total_money);
-                        save.setTotalfee(total_money);
-                        save.setJuli(feiyong.getAlljuli());
-                        save.setSource("2");//android设备
-                        save.setIsdaishoufee("0");
-                        FinalDb db = FinalDb.create(this);
-                        if (send_poi != null) {
-                            db.save(send_poi);
-                        }
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddSongActivity.mInstail);
+                builder.setTitle("提示")
+                        .setMessage("请确保您选择的体积，重量，车类型是否正确！")
+                        .setPositiveButton("确定", (dialog, id) -> {
+                            save_order();
+                        })
+                        .setNegativeButton("取消", (dialog, id) -> {
 
-                        if (buy_poi != null) {
-                            db.save(buy_poi);
-                        }
-                        HBListener listener = new HBListener(this);
-                        listener.getHBList();//检测当前是否有红包
-                        //showDialog();//显示底部弹出框
-                    } else {
-                        ToastShort("距离太远，请重新下单");
-                    }
-                } else {
-                    ToastShort("请重新选择地址");
-                }
+                        });
+                builder.show();
             }
         });
         priceDetailLl.setOnClickListener(v -> {
@@ -544,6 +497,98 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
                 });
             }
         });
+    }
+
+    private void save_order() {
+        if (isSong) {
+            save.setOrdertype("2");
+        } else {
+            save.setOrdertype("3");
+        }
+        save.setUserid(Utils.getCache(Key.KEY_UserId));
+//                save.setRemark(URLEncodeImage(goodTypeEt.getText().toString()));
+        if (firstIsbuy) {
+            if (isSong) {
+                save.setLat1(buy_poi.getLat() + "");
+                save.setLng1(buy_poi.getLng() + "");
+                save.setLat2(send_poi.getLat() + "");
+                save.setLng2(send_poi.getLng() + "");
+            } else {
+                save.setLat2(buy_poi.getLat() + "");
+                save.setLng2(buy_poi.getLng() + "");
+                save.setLat1(send_poi.getLat() + "");
+                save.setLng1(send_poi.getLng() + "");
+            }
+            if (buy_poi != null) {
+                if (isSong) {
+                    save.setAddress1(URLEncodeImage(buy_poi.getPoiAddress()));
+                } else {
+                    save.setAddress2(URLEncodeImage(buy_poi.getPoiAddress()));
+                }
+            } else {
+                if (isSong) {
+                    save.setAddress1("");
+                } else {
+                    save.setAddress2("");
+                }
+            }
+            if (send_poi != null) {
+                if (isSong) {
+                    save.setAddress2(URLEncodeImage(send_poi.getPoiAddress()));
+                } else {
+                    save.setAddress1(URLEncodeImage(send_poi.getPoiAddress()));
+                }
+            } else {
+                if (isSong) {
+                    save.setAddress2("");
+                } else {
+                    save.setAddress1("");
+                }
+            }
+        } else {
+            if (isSong) {
+                save.setLat1(send_poi.getLat() + "");
+                save.setLng1(send_poi.getLng() + "");
+                save.setLat2(buy_poi.getLat() + "");
+                save.setLng2(buy_poi.getLng() + "");
+                save.setAddress2(URLEncodeImage(buy_poi.getPoiAddress()));
+                save.setAddress1(URLEncodeImage(send_poi.getPoiAddress()));
+            } else {
+                save.setLat2(send_poi.getLat() + "");
+                save.setLng2(send_poi.getLng() + "");
+                save.setLat1(buy_poi.getLat() + "");
+                save.setLng1(buy_poi.getLng() + "");
+                save.setAddress1(URLEncodeImage(buy_poi.getPoiAddress()));
+                save.setAddress2(URLEncodeImage(send_poi.getPoiAddress()));
+            }
+        }
+        save.setTel1(tel1Et.getText().toString().trim());
+        save.setTel2(tel2Et.getText().toString().trim());
+        if (feiyong != null) {
+            if (!("0.00").equals(total_money)) {
+                save.setLichengfee(feiyong.getLichengfee());
+                save.setSendfee(total_money);
+                save.setTotalfee(total_money);
+                save.setJuli(feiyong.getAlljuli());
+                save.setSource("2");//android设备
+                save.setIsdaishoufee("0");
+                FinalDb db = FinalDb.create(this);
+                if (send_poi != null) {
+                    db.save(send_poi);
+                }
+
+                if (buy_poi != null) {
+                    db.save(buy_poi);
+                }
+                HBListener listener = new HBListener(this);
+                listener.getHBList();//检测当前是否有红包
+                //showDialog();//显示底部弹出框
+            } else {
+                ToastShort("距离太远，请重新下单");
+            }
+        } else {
+            ToastShort("请重新选择地址");
+        }
     }
 
     @Override
@@ -588,28 +633,33 @@ public class AddSongActivity extends BaseActivity implements IAddBuy, IAddressMa
     }
 
     FeiModel feiyong;
-    String total_money="0";
+    String total_money = "0";
+
     @Override
     public void slResult(FeiModel model, String error) {
         feiyong = model;
         priceDetailLl.setVisibility(View.VISIBLE);
         if (error != null) {
             priceTv.setText(error);
+        } else if (model != null) {
+            sun_price();
+            priceTv.setText("￥" + total_money);
         } else {
-            if (model != null) {
-                sun_price();
-                priceTv.setText("￥"+total_money);
-            }
+            priceTv.setText("费用计算有误，请重新选择地址");
         }
         dialog.dismiss();
     }
-    private double sun_price(){
-        double total=0;
-        total+=Double.parseDouble(save.getChemoney());
-        total+=Double.parseDouble(feiyong.getTotalfee());
-        total_money=total+"";
+
+    private double sun_price() {
+        double total = 0;
+        total += Double.parseDouble(save.getChemoney());
+        if (feiyong != null) {
+            total += Double.parseDouble(feiyong.getTotalfee());
+        }
+        total_money = total + "";
         return total;
     }
+
     @Override
     public void saveResult(String orderId, String totalPrice) {
         bottom_dialog.dismiss();

@@ -7,6 +7,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
@@ -88,10 +89,15 @@ public class SearchPoiActivity extends BaseActivity {
                             minputlist.setAdapter(aAdapter);
                             aAdapter.notifyDataSetChanged();
                             minputlist.setOnItemClickListener((parent, view, position, id) -> {
-                                Intent intent = new Intent();
-                                intent.putExtra("tip", tipList.get(position));
-                                setResult(9, intent);
-                                finish();
+                                Tip model=tipList.get(position);
+                                if(model.getPoint()!=null) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("tip", tipList.get(position));
+                                    setResult(9, intent);
+                                    finish();
+                                }else {
+                                    Toast.makeText(SearchPoiActivity.this,"请选择正确的地点",Toast.LENGTH_SHORT).show();
+                                }
                             });
                         }
                     }

@@ -36,7 +36,7 @@ public class OrderDetailModel {
     private String sLng;
     private String dname;
     private String dphone;
-    private String dglog;
+    private String dglng;
     private String dglat;
     /**
      * DeliverQiangDate : 2016/12/3 14:46:15
@@ -66,12 +66,12 @@ public class OrderDetailModel {
         this.dphone = dphone;
     }
 
-    public String getDglog() {
-        return dglog;
+    public String getDglng() {
+        return dglng;
     }
 
-    public void setDglog(String dglog) {
-        this.dglog = dglog;
+    public void setDglng(String dglng) {
+        this.dglng = dglng;
     }
 
     public String getDglat() {
