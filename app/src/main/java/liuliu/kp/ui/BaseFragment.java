@@ -57,7 +57,7 @@ public class BaseFragment extends Fragment implements IAddressList {
             @Override
             public void convert(CommonViewHolder holder, PoiModel model, int position) {
                 holder.setText(R.id.address_title_tv, model.getPoiName());
-                if (model.getPoiAddress().length() > 20) {
+                if (model.getPoiAddress()!=null&&model.getPoiAddress().length() > 20) {
                     holder.setText(R.id.address_desc_tv, model.getPoiAddress().substring(0, 20) + "...");
                 } else {
                     holder.setText(R.id.address_desc_tv, model.getPoiAddress());

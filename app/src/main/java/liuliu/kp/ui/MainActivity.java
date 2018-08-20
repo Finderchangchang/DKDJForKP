@@ -325,6 +325,12 @@ public class MainActivity extends BaseActivity implements IMain, IHB {
                                         Utils.putCache("now_lat", point_latlng.getLatitude() + "");//获取纬度
                                         Utils.putCache("now_lng", point_latlng.getLongitude() + "");//获取纬度
                                         model = new PoiModel(point_title, point_address, "0", point_latlng.getLatitude(), point_latlng.getLongitude());
+                                        List<CityModel> list = db.findAllByWhere(CityModel.class, "cname like '%" + city + "%'");
+                                        if (list.size() > 0) {
+                                            Utils.putCache("cname", result.getRegeocodeAddress().getCity());
+                                            Utils.putCache("cid", list.get(0).getCid());
+                                            mListener.loadQSLatLngs(list.get(0).getCid());
+                                        }
                                     } else {
                                         no_address_tv.setText("没有位置信息，请尝试其他结果");
                                         send_address_ll.setVisibility(View.GONE);
